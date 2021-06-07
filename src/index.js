@@ -1,6 +1,6 @@
 const { percentages, fixValues } = require('./values');
 
-const settings = {
+const defaultOptions = {
   year: (new Date().getFullYear()),
   foundingYear: (new Date()).getFullYear(),
   foundingMonth: 1,
@@ -8,10 +8,14 @@ const settings = {
   // investFreibetrag: false,
   paidSv: 0,
 };
+let tipps;
 
 // Einkommen laut Einkommensteuerbescheid
 function profitOnEStBescheid(income, outgo, sv = 0) {
   const pauschalierung = Math.min(income * 0.12, 26400);
+  if(pauschalierung > outgo && !tipps.includes('USE_PAUSCHALIERUNG')) {
+    tipps.push('USE_PAUSCHALIERUNG');
+  }
   let value = income - Math.max(outgo, pauschalierung) - sv; // -12% Basispauschalierung (wenn Ausgaben nicht höher)
   value -= Math.min(value * 0.13, 3900); // - 13% Grundfreibetrag
   return value;
@@ -25,7 +29,7 @@ function einkommensteuer(value) {
 // Beitragsgrundlage = Einkommen lt. EStB des jeweiligen Jahres, zuzügl. Hinzurrechnungsbeträge
 // Hinzurrechnungsbeträge = Vorrauszahlungen (+ geleistete Nachzahlungen in dem Jahr?)
 function SVbeitrag(profit, options = {}) {
-  options = Object.assign({}, settings, options);
+  options = Object.assign({}, defaultOptions, options);
 
   const year = options.year; // current year
   let months = options.foundingYear === year ? 13-options.foundingMonth : 12;
@@ -33,7 +37,10 @@ function SVbeitrag(profit, options = {}) {
   // Wenn Sie weniger als 5.710,32 € Gewinn pro Jahr selbstständig erzielen, können Sie
   // sich bei der SVA von der Kranken- und Pensionsversicherung ausnehmen lassen.
   // Sie bezahlen dann für Ihre Selbstständigkeit nur mehr die Unfallversicherung.
-  if(profit < 5710.32) { return fixValues[year].uv * months; }
+  if(profit < 5710.32) {
+    tipps.push('EXCLUDE_KV_PV');
+    return fixValues[year].uv * months;
+  }
 
   let SVbeitragsgrundlage = (profit + options.paidSv) / months;
   let firstOrSecondYear = options.foundingYear === year || (options.foundingYear+1) === year;
@@ -41,11 +48,16 @@ function SVbeitrag(profit, options = {}) {
   let kvGrundlage = fixValues[year].kvMinBeitragsgrundlage;
   let svsGrundlage = fixValues[year].svsMinBeitragsgrundlage;
 
+  let _kvGrundlage = Math.max(fixValues[year].kvMinBeitragsgrundlage, SVbeitragsgrundlage);
+  _kvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _kvGrundlage);
+  let _svsGrundlage = Math.max(fixValues[year].svsMinBeitragsgrundlage, SVbeitragsgrundlage);
+  _svsGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _svsGrundlage);
+
   if(!firstOrSecondYear) {
-    kvGrundlage = Math.max(fixValues[year].kvMinBeitragsgrundlage, SVbeitragsgrundlage);
-    kvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, kvGrundlage);
-    svsGrundlage = Math.max(fixValues[year].svsMinBeitragsgrundlage, SVbeitragsgrundlage);
-    svsGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, svsGrundlage);
+    kvGrundlage = _kvGrundlage;
+    svsGrundlage = _svsGrundlage;
+  } else if(kvGrundlage < _kvGrundlage) {
+    tipps.push('INCREASE_SV');
   }
 
   let pvGrundlage = Math.max(fixValues[year].pvMinBeitragsgrundlage, SVbeitragsgrundlage);
@@ -62,7 +74,8 @@ function SVbeitrag(profit, options = {}) {
 
 
 function calculations(income, outgo, options = {}) {
-  options = Object.assign({}, settings, options);
+  options = Object.assign({}, defaultOptions, options);
+  tipps = [];
 
   let profit = profitOnEStBescheid(income, outgo);
   const sv = SVbeitrag(profit, options);
@@ -74,6 +87,7 @@ function calculations(income, outgo, options = {}) {
     est,
     sv,
     netto,
+    tipps,
   };
 };
 
