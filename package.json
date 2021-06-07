@@ -1,0 +1,27 @@
+{
+  "name": "@gewinnrechner/rechner",
+  "version": "1.0.0",
+  "description": "Calculates the real profit for an Austrian Freelancer",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gewinnrechner/rechner.git"
+  },
+  "keywords": [
+    "gewinnrechner",
+    "austria",
+    "freelancer"
+  ],
+  "author": "Betty Steger",
+  "license": "AGPLv3",
+  "bugs": {
+    "url": "https://github.com/gewinnrechner/rechner/issues"
+  },
+  "homepage": "https://github.com/gewinnrechner/rechner#readme",
+  "devDependencies": {
+    "jest": "^27.0.4"
+  }
+}
