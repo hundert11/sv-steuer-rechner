@@ -24,8 +24,9 @@ Ich finde, der WKO-Rechner gibt "falsche" Tipps, ein Beispiel: "In den Folgejahr
 **Das Problem für Neugründer:** Ihr werdet in den ersten 2 Jahren weit unten für die Krankenversicherungbeiträge eingestuft! Die endgültige Berechnung erfolgt erst im 3. Jahr, was zu hohen Nachzahlungen führen kann.
 
 
+## [Demo](https://hundertelf.github.io/sv-steuer-rechner/demo/)
 
 ---
 
-Made with ❤ in Salzburg.
+Made with ❤  in Salzburg.
 
