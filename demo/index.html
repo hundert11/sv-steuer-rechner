@@ -64,7 +64,7 @@
           <label class="label">Berechnung für das Jahr</label>
           <div class="control">
             <div class="select">
-              <select x-model="options.year">
+              <select x-model.number="options.year">
                 <template
                   x-for="y in [currentYear, currentYear-1, currentYear-2, currentYear-3, currentYear-4, currentYear-5]">
                   <option :key="y" :value="y" x-text="y"></option>
