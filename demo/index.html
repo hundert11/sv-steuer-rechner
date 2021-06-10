@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="de" class="has-navbar-fixed-top">
+
+<head>
+  <meta charset="utf-8">
+  <title>hundert11 SV- und Steuer-Rechner Demo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+  <style>.w-100 {width: 100%;} .rounded {border-radius: 50%;}</style>
+  <script type="module" src="../index.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+</head>
+
+<body>
+  <nav class="navbar is-fixed-top has-text-centered">
+    <div class="column">
+      <h1 class="title">
+        1️⃣1️⃣1️⃣ hundertelf
+      </h1>
+      <p class="subtitle">
+        SV- und Steuer-Rechner
+      </p>
+    </div>
+    <div class="column is-hidden-touch">
+      <h1 class="title">
+        WKO
+      </h1>
+      <p class="subtitle">
+        SV- und Steuer-Rechner
+      </p>
+    </div>
+  </nav>
+  <div class="columns">
+    <div class="column">
+      <section class="section"
+                x-data="{
+                  currentYear: (new Date()).getFullYear(),
+                  options: {
+                    year: (new Date()).getFullYear(),
+                    foundingYear: (new Date()).getFullYear(),
+                    foundingMonth: 1,
+                  },
+                  income: 0, outgo: 0,
+                  showYear: false,
+                  results: {}
+                }"
+                x-init="results = hundert11.calculate(income, outgo, options);
+                        $watch('income', _ => results = hundert11.calculate(income, outgo, options));
+                        $watch('outgo', _ => results = hundert11.calculate(income, outgo, options));
+                        $watch('options.year', _ => results = hundert11.calculate(income, outgo, options));
+                        $watch('options.foundingYear', _ => results = hundert11.calculate(income, outgo, options));
+                        $watch('options.foundingMonth', _ => results = hundert11.calculate(income, outgo, options));">
+
+        <p>Speziell für EinzelunternehmerInnen, die digitale Dienstleistungen anbieten, d.h. keine Betriebsausgaben für Personal oder Waren haben.</p>
+
+        <p x-show="!showYear">
+          Berechnet wird mit den Werten von <span x-text="options.year"></span>.
+          <a @click="showYear = true">Nachrechnen für verganges Jahr?</a>
+        </p>
+
+        <div x-show="showYear" class="field mt-4">
+          <label class="label">Berechnung für das Jahr</label>
+          <div class="control">
+            <div class="select">
+              <select x-model="options.year">
+                <template
+                  x-for="y in [currentYear, currentYear-1, currentYear-2, currentYear-3, currentYear-4, currentYear-5]">
+                  <option :key="y" :value="y" x-text="y"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <form class="mt-4">
+          <div class="columns">
+            <div class="column field">
+              <label class="label" for="income">
+                <span x-show="currentYear == options.year">Voraussichtliche</span> Einnahmen
+              </label>
+              <div class="control has-icons-left">
+                <input class="input" x-model.number="income" id="income" type="number" placeholder="30000" min="0" step="500">
+                <span class="icon is-small is-left">
+                  €
+                </span>
+              </div>
+              <p class="help"><input class="w-100" type="range" x-model.number="income" min="0" max="90000" step="500"></p>
+            </div>
+            <div class="column field">
+              <label class="label" for="outgo">
+                <span x-show="currentYear == options.year">Voraussichtliche</span> Ausgaben
+              </label>
+              <div class="control has-icons-left">
+                <input class="input" x-model.number="outgo" id="outgo" type="number" placeholder="2000" min="0" step="100">
+                <span class="icon is-small is-left">
+                  €
+                </span>
+              </div>
+              <p class="help"><input class="w-100" type="range" x-model.number="outgo" min="0" max="90000" step="500"></p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-half field">
+              <label class="label">Gründungsjahr</label>
+              <div class="control">
+                <input class="input" x-model.number="options.foundingYear" id="year" type="number" min="2000" :max="options.year">
+              </div>
+            </div>
+            <div class="column field" x-show="options.foundingYear === options.year">
+              <label class="label">Gründungsmonat</label>
+              <div class="control">
+                <input class="input" x-model.number="options.foundingMonth" id="month" type="number" min="1" max="12">
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="columns mt-5">
+          <div class="column">
+            <div class="box is-flex is-align-items-center is-justify-content-space-between is-size-3"
+                 :class="{ 'has-text-grey-lighter': !income }">
+              <div>
+                <h5 class="is-size-7 has-text-grey is-uppercase">
+                  Nettoeinkommen
+                </h5>
+                <span x-text="results.netto.toLocaleString()"></span> €
+              </div>
+              <i class="fas fa-chart-line rounded has-background-success has-text-white p-4 is-size-4"></i>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box is-flex is-align-items-center is-justify-content-space-between is-size-3"
+                  :class="{ 'has-text-grey-lighter': !income }">
+              <div>
+                <h5 class="is-size-7 has-text-grey is-uppercase">
+                  Einkommensteuer
+                </h5>
+                <span x-text="results.est.toLocaleString()"></span> €
+              </div>
+              <i class="fas fa-landmark rounded has-background-grey-dark has-text-white p-4 is-size-4"></i>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box is-flex is-align-items-center is-justify-content-space-between is-size-3"
+                  :class="{ 'has-text-grey-lighter': !income }">
+              <div>
+                <h5 class="is-size-7 has-text-grey is-uppercase">
+                  Sozialversicherung
+                </h5>
+                <span x-text="results.sv.toLocaleString()"></span> €
+              </div>
+              <i class="fas fa-heartbeat rounded has-background-warning-dark has-text-white p-4 is-size-4"></i>
+            </div>
+          </div>
+        </div>
+
+        <template x-for="tipp in results.tipps" :key="tipp">
+          <article class="message is-success">
+            <div class="message-body">
+              💡 &nbsp;<span x-text="{USE_PAUSCHALIERUNG: 'Verwende die Basispauschalierung', EXCLUDE_KV_PV: 'Befreie dich von Kranken- und Pensionsversicherung', INCREASE_SV: 'Erhöhe deine SV-Beiträge'}[tipp]"></span>
+            </div>
+          </article>
+        </template>
+
+      </section>
+
+      <section class="section is-hidden-desktop">
+        <a href="https://svrechner.wko.at/">Zum WKO SV- und Steuer-Rechner</a>
+      </section>
+    </div>
+    <div class="column is-hidden-touch">
+      <iframe src="https://svrechner.wko.at/" width="100%" height="1500" style="margin-top: -100px;"></iframe>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+</body>
+
+</html>

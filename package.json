@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Calculates the real profit for an Austrian Freelancer",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
   "homepage": "https://github.com/gewinnrechner/rechner#readme",
   "devDependencies": {
     "jest": "^27.0.4"
+  },
+  "jest": {
+    "transform": {}
   }
 }
