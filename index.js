@@ -19,8 +19,8 @@ export function calculate(income, outgo, options = {}) {
 
   let profit = profitOnEStBescheid(income, outgo, options);
   const sv = SVbeitrag(profit, options);
-  options.paidSv = sv;
-  profit = profitOnEStBescheid(income, outgo, options);
+  // options.paidSv = sv;
+  // profit = profitOnEStBescheid(income, outgo, options);
   const est = einkommensteuer(profit, options.year);
   const netto = Math.round(income - outgo - est - sv);
 
