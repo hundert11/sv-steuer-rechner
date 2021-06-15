@@ -24,23 +24,24 @@ export function SVbeitrag(profit, options = {}) {
 
   let kvGrundlage = fixValues[year].kvMinBeitragsgrundlage;
   let svsGrundlage = fixValues[year].svsMinBeitragsgrundlage;
+  let pvGrundlage = fixValues[year].pvMinBeitragsgrundlage;
 
   let _kvGrundlage = Math.max(fixValues[year].kvMinBeitragsgrundlage, SVbeitragsgrundlage);
   _kvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _kvGrundlage);
   let _svsGrundlage = Math.max(fixValues[year].svsMinBeitragsgrundlage, SVbeitragsgrundlage);
   _svsGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _svsGrundlage);
+  let _pvGrundlage = Math.max(fixValues[year].pvMinBeitragsgrundlage, SVbeitragsgrundlage);
+  _pvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _pvGrundlage);
 
   if(!firstOrSecondYear) {
     kvGrundlage = _kvGrundlage;
     svsGrundlage = _svsGrundlage;
+    pvGrundlage = _pvGrundlage; // TODO add 'Nachzahlung'
   } else if(_kvGrundlage > kvGrundlage) {
     options.tipps.add('INCREASE_SV');
   }
   // TODO add tipp when to increase SVBeitrag (if you can input your paid SVbeitrag)
   // options.tipps.add('INCREASE_SV');
-
-  let pvGrundlage = Math.max(fixValues[year].pvMinBeitragsgrundlage, SVbeitragsgrundlage);
-  pvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, pvGrundlage);
 
   const kv = kvGrundlage * percentages[year].kv;
   const pv = pvGrundlage * percentages[year].pv;
