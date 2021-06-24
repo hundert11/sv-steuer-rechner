@@ -49,5 +49,9 @@ export function SVbeitrag(profit, options = {}) {
   const svs = svsGrundlage * percentages.vorsorge;
   // console.log('Werte pro Monat -->', 'kv:', kv, 'pv:', pv, 'uv:', uv, 'svs:', svs);
 
+  if(firstOrSecondYear) {
+    console.log('Nachzahlung', Math.round((_pvGrundlage * percentages[year].pv - pv) * months));
+  }
+
   return (kv+pv+uv+svs) * months;
 };
