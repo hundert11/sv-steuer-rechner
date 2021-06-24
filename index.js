@@ -18,13 +18,18 @@ function profitOnEStBescheid(income, outgo, options) {
 export function calculate(income, outgo, options = {}) {
   options = Object.assign({}, defaultOptions, options);
   options.tipps = new Set();
+  options.paidSv = options.paidSv || 0;
 
   let profit = profitOnEStBescheid(income, outgo, options);
   const sv = SVbeitrag(profit, options);
-  options.paidSv = sv.toPay;
-  profit = profitOnEStBescheid(income, outgo, options);
+
+  // if no user input, calculate profit based on SV estimate
+  if(!options.paidSv) {
+    options.paidSv = sv.toPay;
+    profit = profitOnEStBescheid(income, outgo, options);
+  }
   const est = einkommensteuer(profit, options.year);
-  const netto = Math.round(income - outgo - est - sv.toPay);
+  const netto = Math.round(income - outgo - est - options.paidSv);
 
   return {
     est: Math.round(est),

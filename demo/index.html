@@ -45,6 +45,7 @@
                     year: (new Date()).getFullYear(),
                     foundingYear: (new Date()).getFullYear(),
                     foundingMonth: 1,
+                    paidSv: 0
                   },
                   income: 0, outgo: 0,
                   showYear: false,
@@ -107,13 +108,22 @@
           </div>
           <div class="columns">
             <div class="column is-half field">
-              <label class="label">Gründungsjahr</label>
+              <label class="label" for="sv">Gezahlte Sozialversicherungsbeiträge</label>
+              <div class="control has-icons-left">
+                <input class="input" x-model.number="options.paidSv" id="sv" type="number" placeholder="2000" min="0" step="500">
+                <span class="icon is-small is-left">
+                  €
+                </span>
+              </div>
+            </div>
+            <div class="column field">
+              <label class="label" for="year">Gründungsjahr</label>
               <div class="control">
                 <input class="input" x-model.number="options.foundingYear" id="year" type="number" min="2000" :max="options.year">
               </div>
             </div>
-            <div class="column field" x-show="options.foundingYear === options.year">
-              <label class="label">Gründungsmonat</label>
+            <div class="column field" :class="options.foundingYear === options.year ? '' : 'is-invisible'">
+              <label class="label" for="month">Gründungsmonat</label>
               <div class="control">
                 <input class="input" x-model.number="options.foundingMonth" id="month" type="number" min="1" max="12">
               </div>
@@ -153,9 +163,9 @@
                 <h5 class="is-size-7 has-text-grey is-uppercase mr-2">
                   Sozialversicherung
                 </h5>
-                <span class="same-width-numbers" x-text="results.sv.toLocaleString()"></span> €
+                <span class="same-width-numbers" x-text="results.sv.toLocaleString()"></span>€
                 <span x-show="results.svAdditional" class="has-text-danger is-size-7">
-                  + <span class="same-width-numbers" x-text="results.svAdditional.toLocaleString()"></span> €
+                  +<span x-text="results.svAdditional.toLocaleString()"></span>€
                 </span>
               </div>
               <i class="fas fa-heartbeat rounded has-background-warning-dark has-text-white p-4 is-size-5"></i>
