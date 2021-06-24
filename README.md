@@ -13,13 +13,13 @@ Ihr fragt euch womöglich, warum ich dann den 111-Rechner überhaupt entwickle.
 
 Im Laufe der Jahre habe ich Lust auf ein neues Tool bekommen, das meine SV-Nachzahlungen verringern soll:
 
-1. **Open Source**
+1. **Open Source**  
 Jeder soll sehen wie die Zahlen berechnet werden - im WKO-Rechner finde ich diese Prozentsätze nicht mit dem die Sozialversicherungsbeträge errechnet werden.
 
-2. **Pauschalierung vs. reelle Ausgaben**
+2. **Pauschalierung vs. reelle Ausgaben**  
 Viele wissen nicht, dass es die [Betriebsausgabenpauschale](https://www.wko.at/service/steuern/Die_Basispauschalierung.html) gibt. Ich habe als Entwicklerin fast keine Ausgaben - ich arbeite von zu Hause aus, meine Büromaterialien beschränken sich auf Schreibtisch, Laptop und Monitor. Das heißt, wenn du sicher weißt, dass du mit deinen jährlichen Ausgaben nicht auf 12% deines Umsatzes (= pauschalierte Betriebsausgaben) kommst, kannst du es dir sparen Belege zu sammeln. Natürlich solltest du eine Vergleichsrechnung machen! Außerdem glaube ich einen [Fehler im WKO-Rechner](https://www.facebook.com/groups/amici.delle.sva/permalink/3764616033599817/) gefunden zu haben, wo es um die 12% Betriebsausgabenpauschale geht.
 
-3. **Nettoeinkommen ohne SV-Nachzahlung**
+3. **Nettoeinkommen ohne SV-Nachzahlung**  
 Ich finde, der WKO-Rechner gibt "falsche" Tipps, ein Beispiel: "In den Folgejahren ist eine Nachzahlung zur Sozialversicherung in Höhe von € 10.000 zu erwarten." Wieso nicht gleich für dieses Jahr den SV-Beitrag erhöhen, dadurch vermindert sich auch der steuerliche Gewinn und ich habe im nächsten Jahr keine große Überraschung.
 **Das Problem für Neugründer:** Ihr werdet in den ersten 2 Jahren weit unten für die Krankenversicherungbeiträge eingestuft! Die endgültige Berechnung erfolgt erst im 3. Jahr, was zu hohen Nachzahlungen führen kann.
 

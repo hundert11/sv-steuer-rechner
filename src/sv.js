@@ -5,7 +5,7 @@ import { percentages, fixValues } from './sv-values.js';
 // Beitragsgrundlage = Einkommen lt. EStB des jeweiligen Jahres, zuzügl. Hinzurrechnungsbeträge
 // Hinzurrechnungsbeträge = Vorrauszahlungen (+ geleistete Nachzahlungen in dem Jahr?)
 export function SVbeitrag(profit, options = {}) {
-  if(!profit) { return 0; }
+  if(!profit) { return {toPay: 0}; }
   options = Object.assign({}, defaultOptions, options);
 
   const year = options.year; // current year
@@ -16,7 +16,7 @@ export function SVbeitrag(profit, options = {}) {
   // Sie bezahlen dann für Ihre Selbstständigkeit nur mehr die Unfallversicherung.
   if(profit < 5710.32) {
     options.tipps.add('EXCLUDE_KV_PV');
-    return fixValues[year].uv * months;
+    return {toPay: fixValues[year].uv * months};
   }
 
   let SVbeitragsgrundlage = (profit + options.paidSv) / months;
@@ -49,9 +49,8 @@ export function SVbeitrag(profit, options = {}) {
   const svs = svsGrundlage * percentages.vorsorge;
   // console.log('Werte pro Monat -->', 'kv:', kv, 'pv:', pv, 'uv:', uv, 'svs:', svs);
 
-  if(firstOrSecondYear) {
-    console.log('Nachzahlung', Math.round((_pvGrundlage * percentages[year].pv - pv) * months));
-  }
-
-  return (kv+pv+uv+svs) * months;
+  return {
+    toPay: (kv+pv+uv+svs) * months,
+    additionalPayment: firstOrSecondYear ? (_pvGrundlage * percentages[year].pv - pv) * months : 0
+  };
 };

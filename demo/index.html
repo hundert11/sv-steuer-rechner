@@ -14,7 +14,7 @@
     .same-width-numbers {font-feature-settings: "tnum";font-variant-numeric: tabular-nums;}
   </style>
   <script type="module" src="../index.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
@@ -154,6 +154,9 @@
                   Sozialversicherung
                 </h5>
                 <span class="same-width-numbers" x-text="results.sv.toLocaleString()"></span> €
+                <span x-show="results.svAdditional" class="has-text-danger is-size-7">
+                  + <span class="same-width-numbers" x-text="results.svAdditional.toLocaleString()"></span> €
+                </span>
               </div>
               <i class="fas fa-heartbeat rounded has-background-warning-dark has-text-white p-4 is-size-5"></i>
             </div>

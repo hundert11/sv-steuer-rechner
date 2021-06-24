@@ -2,6 +2,7 @@ import { defaultOptions } from './src/options.js';
 import { einkommensteuer } from './src/est.js';
 import { SVbeitrag } from './src/sv.js';
 
+
 // Einkommen laut Einkommensteuerbescheid
 function profitOnEStBescheid(income, outgo, options) {
   const pauschalierung = Math.min(income * 0.12, 26400);
@@ -13,20 +14,22 @@ function profitOnEStBescheid(income, outgo, options) {
   return value;
 }
 
+
 export function calculate(income, outgo, options = {}) {
   options = Object.assign({}, defaultOptions, options);
   options.tipps = new Set();
 
   let profit = profitOnEStBescheid(income, outgo, options);
   const sv = SVbeitrag(profit, options);
-  options.paidSv = sv;
+  options.paidSv = sv.toPay;
   profit = profitOnEStBescheid(income, outgo, options);
   const est = einkommensteuer(profit, options.year);
-  const netto = Math.round(income - outgo - est - sv);
+  const netto = Math.round(income - outgo - est - sv.toPay);
 
   return {
     est: Math.round(est),
-    sv: Math.round(sv),
+    sv: Math.round(sv.toPay),
+    svAdditional: Math.round(sv.additionalPayment || 0),
     netto,
     tipps: [...options.tipps]
   };
