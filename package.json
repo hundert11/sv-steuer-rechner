@@ -1,5 +1,5 @@
 {
-  "name": "@gewinnrechner/rechner",
+  "name": "@hundertelf/sv-steuer-rechner",
   "version": "1.0.0",
   "description": "Calculates the real profit for an Austrian Freelancer",
   "main": "src/index.js",
@@ -9,19 +9,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gewinnrechner/rechner.git"
+    "url": "git+https://github.com/hundertelf/sv-steuer-rechner.git"
   },
   "keywords": [
     "gewinnrechner",
     "austria",
-    "freelancer"
+    "freelancer",
+    "sozialversicherung",
+    "steuern"
   ],
   "author": "Betty Steger",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/gewinnrechner/rechner/issues"
+    "url": "https://github.com/hundertelf/sv-steuer-rechner/issues"
   },
-  "homepage": "https://github.com/gewinnrechner/rechner#readme",
+  "homepage": "https://github.com/hundertelf/sv-steuer-rechner#readme",
   "devDependencies": {
     "jest": "^27.0.4"
   },

@@ -5,13 +5,20 @@ Hilft dein wahres Jahres-Nettoeinkommen zu schätzen und gibt Tipps, wie du dein
 Dieser SV- und Steuer-Rechner ist Open-Source und für alle EinzelunternehmerInnen oder FreelancerInnen, die mir helfen wollen Klarheit in ihre Zahlen zu bringen.
 
 
-
 ## 111 vs. WKO Rechner
 
 Der [WKO-Rechner](https://svrechner.wko.at/) ist ein fantastisches Tool um die EST (Einkommensteuer), SV-Beitrag und SV-Nachzahlung zu berechnen. Nach meinem Wissen ist der von haude entwickelte Rechner einer der besten in Österreich.
 Ihr fragt euch womöglich, warum ich dann den 111-Rechner überhaupt entwickle.
 
-Im Laufe der Jahre habe ich Lust auf ein neues Tool bekommen, das meine SV-Nachzahlungen verringern soll:
+**111-Funktionen:**
+
+Im Laufe der Jahre habe ich Lust auf ein neues Tool bekommen, das meine SV-Nachzahlungen verringern soll. 
+
+* Man kann alte Jahre “nachrechnen”
+* Die Basispauschalierung wird autom. berücksichtigt, wenn die reellen Ausgaben weniger sein sollten
+* Du kannst deinen jährlichen SV-Beitrag eingeben um zu sehen ob du zu wenig oder zu viel zahlst
+
+**Die Unterschiede zum WKO-Rechner:**
 
 1. **Open Source**  
 Jeder soll sehen wie die Zahlen berechnet werden - im WKO-Rechner finde ich diese Prozentsätze nicht mit dem die Sozialversicherungsbeträge errechnet werden.
@@ -26,7 +33,35 @@ Ich finde, der WKO-Rechner gibt "falsche" Tipps, ein Beispiel: "In den Folgejahr
 
 ## [Demo](https://hundertelf.github.io/sv-steuer-rechner/demo/)
 
+Hier könnt ihr den [111-Rechner](https://hundertelf.github.io/sv-steuer-rechner/demo/) ausprobieren und mit dem WKO-Rechner vergleichen.
+
+
+## Installation
+
+```
+npm install @hundertelf/sv-steuer-rechner
+```
+
+
+## Usage
+
+```
+import calculate from '@hundertelf/sv-steuer-rechner';
+
+const options = {
+  year: 2021,
+  foundingYear: 2018,
+  foundingMonth: 3,
+  paidSv: 0
+};
+const income = 30000;
+const outgo = 2000;
+
+const results = calculate(income, outgo, options);
+console.log(results); // { est, sv, netto, tipps };
+```
+
 ---
 
-Made with ❤  in Salzburg.
+Made with ♡ in Salzburg.
 
