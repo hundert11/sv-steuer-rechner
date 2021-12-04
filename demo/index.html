@@ -45,6 +45,8 @@
                     year: (new Date()).getFullYear(),
                     foundingYear: (new Date()).getFullYear(),
                     foundingMonth: 1,
+                    useInvestFreibetrag: false,
+                    investFreibetrag: 0,
                     paidSv: 0
                   },
                   income: 0, outgo: 0,
@@ -57,7 +59,9 @@
                         $watch('options.year', _ => results = hundert11.calculate(income, outgo, options));
                         $watch('options.foundingYear', _ => results = hundert11.calculate(income, outgo, options));
                         $watch('options.foundingMonth', _ => results = hundert11.calculate(income, outgo, options));
-                        $watch('options.paidSv', _ => results = hundert11.calculate(income, outgo, options));">
+                        $watch('options.paidSv', _ => results = hundert11.calculate(income, outgo, options));
+                        $watch('options.useInvestFreibetrag', _ => options.investFreibetrag = results.maxInvestFreibetrag);
+                        $watch('options.investFreibetrag', _ => results = hundert11.calculate(income, outgo, options));">
 
         <p>Speziell für EinzelunternehmerInnen, die digitale Dienstleistungen anbieten, d.h. keine Betriebsausgaben für Personal oder Waren haben.</p>
 
@@ -105,6 +109,28 @@
                 </span>
               </div>
               <p class="help"><input class="w-100" type="range" x-model.number="outgo" min="0" :max="20000" step="500" tabindex="-1"></p>
+
+              <!-- <p x-show="(income - outgo - options.paidSv) > 30000" class="help">
+                <label>
+                  <input x-model="options.useInvestFreibetrag" type="checkbox" />
+                  Investitionsbedingter Gewinnfreibetrag
+                </label>
+                <a href="https://www.wko.at/service/steuern/der-gewinnfreibetrag.html" target="_blank" title="öffnet wko.at">
+                  <i class="fa fa-info-circle"></i>
+                </a>
+              </p>
+              <div x-show="options.useInvestFreibetrag">
+                <label class="label" for="invest">
+                  Summe der Investitionen
+                </label>
+                <div class="control has-icons-left">
+                  <input class="input" x-model.number="options.investFreibetrag" id="invest" type="number" placeholder="2000" min="0"
+                          :max="results.maxInvestFreibetrag" step="100">
+                  <span class="icon is-small is-left">
+                    €
+                  </span>
+                </div>
+              </div> -->
             </div>
           </div>
           <div class="columns">
@@ -177,7 +203,23 @@
         <template x-for="tipp in results.tipps" :key="tipp">
           <article class="message is-success">
             <div class="message-body">
-              💡 &nbsp;<span x-text="{USE_PAUSCHALIERUNG: 'Verwende die Basispauschalierung', EXCLUDE_KV_PV: 'Befreie dich von Kranken- und Pensionsversicherung', INCREASE_SV: 'Erhöhe deine SV-Beiträge'}[tipp]"></span>
+              💡 &nbsp;<span x-text="{USE_PAUSCHALIERUNG: 'Nutze die Basispauschalierung', EXCLUDE_KV_PV: 'Befreie dich von Kranken- und Pensionsversicherung', INCREASE_SV: 'Erhöhe deine SV-Beiträge', USE_INVESTFREIBETRAG: 'Nutze den investitionsbedingten Gewinnfreibetrag'}[tipp]"></span>
+
+              <span x-show="tipp == 'USE_PAUSCHALIERUNG'">
+                <a href="https://www.wko.at/service/steuern/Die_Basispauschalierung.html" target="_blank"
+                  class="text-gray-500 hover:text-gray-900" title="öffnet wko.at"><i class="fa fa-info-circle"></i></a>
+                <span class="is-pulled-right has-text-right is-size-7">
+                  Wird für die Rechnung oben autom. verwendet! Reelle Ausgaben <span x-text="outgo ? outgo.toLocaleString() : 0"></span> €<br>
+                  vs. Betriebsausgabenpauschale: 12% * Einkommen = <span x-text="Math.min(income*0.12, 26400).toLocaleString()"></span> €
+                </span>
+              </span>
+
+              <span x-show="tipp == 'USE_INVESTFREIBETRAG'">
+                <a href="https://www.wko.at/service/steuern/der-gewinnfreibetrag.html" target="_blank" title="öffnet wko.at"><i class="fa fa-info-circle"></i></a>
+                <span class="is-pulled-right has-text-right is-size-7">
+                  Investiere max. <span x-text="results.maxInvestFreibetrag.toLocaleString()"></span> € in bestimmte Wertpapiere<br>
+                  <span x-show="results.tipps.includes('USE_PAUSCHALIERUNG')">ACHTUNG: Ist nicht zulässig, wenn Basispauschalierung verwendet wird!</span>
+              </span>
             </div>
           </article>
         </template>

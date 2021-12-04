@@ -5,7 +5,7 @@ import { percentages, fixValues } from './sv-values.js';
 // Beitragsgrundlage = Einkommen lt. EStB des jeweiligen Jahres, zuzügl. Hinzurrechnungsbeträge
 // Hinzurrechnungsbeträge = Vorrauszahlungen (+ geleistete Nachzahlungen in dem Jahr?)
 export function SVbeitrag(profit, options = {}) {
-  if(!profit) { return {toPay: 0}; }
+  if(!profit) { return {toPay: 0}; }
   options = Object.assign({}, defaultOptions, options);
 
   const year = options.year; // current year
