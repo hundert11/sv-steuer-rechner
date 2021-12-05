@@ -52,7 +52,7 @@ export function calculate(income, outgo, options = {}) {
   const est = einkommensteuer(profit, options.year);
   let netto = Math.round(income - outgo - est - options.paidSv);
 
-  let maxInvestFreibetrag = 0;
+  let maxInvestFreibetrag = parseInt((profit - 30000) * 0.13);
   if(options.useInvestFreibetrag) {
     maxInvestFreibetrag = parseInt((profit + options.investFreibetrag - 30000) * 0.13);
     netto -= options.investFreibetrag;
