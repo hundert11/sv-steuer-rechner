@@ -60,7 +60,7 @@
                         $watch('options.foundingYear', _ => results = hundert11.calculate(income, outgo, options));
                         $watch('options.foundingMonth', _ => results = hundert11.calculate(income, outgo, options));
                         $watch('options.paidSv', _ => results = hundert11.calculate(income, outgo, options));
-                        $watch('options.useInvestFreibetrag', _ => options.investFreibetrag = results.maxInvestFreibetrag);
+                        $watch('options.useInvestFreibetrag', _ => options.investFreibetrag = hundert11.calculate(income, outgo, options).maxInvestFreibetrag);
                         $watch('options.investFreibetrag', _ => results = hundert11.calculate(income, outgo, options));">
 
         <p>Speziell für EinzelunternehmerInnen, die digitale Dienstleistungen anbieten, d.h. keine Betriebsausgaben für Personal oder Waren haben.</p>
@@ -110,19 +110,16 @@
               </div>
               <p class="help"><input class="w-100" type="range" x-model.number="outgo" min="0" :max="20000" step="500" tabindex="-1"></p>
 
-              <!-- <p x-show="(income - outgo - options.paidSv) > 30000" class="help">
+              <p x-show="(income - outgo - options.paidSv) > 30000" class="help">
                 <label>
                   <input x-model="options.useInvestFreibetrag" type="checkbox" />
                   Investitionsbedingter Gewinnfreibetrag
                 </label>
-                <a href="https://www.wko.at/service/steuern/der-gewinnfreibetrag.html" target="_blank" title="öffnet wko.at">
+                <a href="https://www.wko.at/service/steuern/der-gewinnfreibetrag.html#heading_Investitionsbedingter_Gewinnfreibetrag" target="_blank" title="öffnet wko.at">
                   <i class="fa fa-info-circle"></i>
                 </a>
               </p>
               <div x-show="options.useInvestFreibetrag">
-                <label class="label" for="invest">
-                  Summe der Investitionen
-                </label>
                 <div class="control has-icons-left">
                   <input class="input" x-model.number="options.investFreibetrag" id="invest" type="number" placeholder="2000" min="0"
                           :max="results.maxInvestFreibetrag" step="100">
@@ -130,7 +127,12 @@
                     €
                   </span>
                 </div>
-              </div> -->
+                <p class="help" x-show="(income * 0.12) > outgo">
+                  <b>TIPP:</b> Wird die <abbr title="Einkommensteuer">ESt</abbr> weniger, wenn angehackt?<br>
+                  Pauschalieren ODER investieren:
+                  <a href="https://www.christianprodinger.com/wp-content/uploads/2018/05/SWK2011_36_GFBPauschalierung.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Vergleich</a>
+                </p>
+              </div>
             </div>
           </div>
           <div class="columns">
@@ -218,7 +220,7 @@
                 <a href="https://www.wko.at/service/steuern/der-gewinnfreibetrag.html" target="_blank" title="öffnet wko.at"><i class="fa fa-info-circle"></i></a>
                 <span class="is-pulled-right has-text-right is-size-7">
                   Investiere max. <span x-text="results.maxInvestFreibetrag.toLocaleString()"></span> € in bestimmte Wertpapiere<br>
-                  <span x-show="results.tipps.includes('USE_PAUSCHALIERUNG')">ACHTUNG: Ist nicht zulässig, wenn Basispauschalierung verwendet wird!</span>
+                  <a x-show="results.tipps.includes('USE_PAUSCHALIERUNG')" href="https://www.christianprodinger.com/wp-content/uploads/2018/05/SWK2011_36_GFBPauschalierung.pdf" target="_blank">ACHTUNG: Basispauschalierung darf nicht verwendet werden!</a>
               </span>
             </div>
           </article>

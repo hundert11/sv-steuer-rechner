@@ -50,16 +50,20 @@ export function calculate(income, outgo, options = {}) {
     profit = profitOnEStBescheid(income, outgo, options);
   }
   const est = einkommensteuer(profit, options.year);
-  const netto = Math.round(income - outgo - est - options.paidSv);
+  let netto = Math.round(income - outgo - est - options.paidSv);
 
-  console.log(options.tipps);
+  let maxInvestFreibetrag = 0;
+  if(options.useInvestFreibetrag) {
+    maxInvestFreibetrag = parseInt((profit + options.investFreibetrag - 30000) * 0.13);
+    netto -= options.investFreibetrag;
+  }
 
   return {
     est: Math.round(est),
     sv: Math.round(sv.toPay),
     svAdditional: Math.round(sv.additionalPayment || 0),
     profit,
-    maxInvestFreibetrag: profit > 30000 && parseInt((profit - 30000) * 0.13),
+    maxInvestFreibetrag,
     netto,
     tipps: [...options.tipps]
   };
