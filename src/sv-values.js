@@ -1,9 +1,13 @@
 // Gewerbliche Sozialversicherungsbeiträge
 // @see https://www.wko.at/service/arbeitsrecht-sozialrecht/Gewerbliche-Sozialversicherungsbeitraege---Ausmass.html
 export const percentages = {
-  2021: {
-    pv: 0.185,     // 18,5% Pensionsversicherung
+  2022: {
+    pv: 0.185,    // 18,5% Pensionsversicherung
     kv: 0.068     // 6,80% Krankenversicherung
+  },
+  2021: {
+    pv: 0.185,
+    kv: 0.068
   },
   2020: {
     pv: 0.185,
@@ -30,9 +34,16 @@ export const percentages = {
 
 // Beitragsrechtlichen Werte in der Sozialversicherung.
 // unter D. Sozialversicherung der selbständig Erwerbstätigen
-// mit und ohne Mitgliedschaft in der Wirtschaftskammer sowie der freiberuflich selbständig Erwerbstätigen (Seite 14 oder 15)
+// mit und ohne Mitgliedschaft in der Wirtschaftskammer sowie der freiberuflich selbständig Erwerbstätigen (Seite 14 oder 15 oder 16)
 // @see https://www.sozialversicherung.at/cdscontent/?contentid=10007.862683&portal=svportal
 export const fixValues = {
+  2022: {
+    uv: 10.64, // monatlich in € Unfallversicherung
+    kvMinBeitragsgrundlage: 485.85,
+    pvMinBeitragsgrundlage: 485.85,
+    svsMinBeitragsgrundlage: 485.85,
+    maxBeitragsgrundlage: 6615
+  },
   2021: {
     uv: 10.42, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 475.86,
