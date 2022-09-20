@@ -38,14 +38,14 @@ Hier könnt ihr den [111-Rechner](https://hundertelf.github.io/sv-steuer-rechner
 
 ## Installation
 
-```
+```bash
 npm install @hundertelf/sv-steuer-rechner
 ```
 
 
 ## Usage
 
-```
+```js
 import calculate from '@hundertelf/sv-steuer-rechner';
 
 const options = {
