@@ -1,5 +1,5 @@
 // Einkommensteuertarif
-// @see https://www.usp.gv.at/steuern-finanzen/einkommensteuer/tarifstufen-berechnungsformeln.html
+// @see https://www.usp.gv.at/steuern-finanzen/einkommensteuer/tarifstufen.html
 
 export function einkommensteuer(value, year) {
   if(year >= 2024) {
