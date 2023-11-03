@@ -7,7 +7,8 @@ test('should return taxfree income if small profit', () => {
   let income = 100;
   let uv = Math.round(fixValues[(new Date().getFullYear())].uv * 12);
 
-  expect(calculate(income, 0)).toStrictEqual({
+  const { est, netto, sv, tipps } = calculate(income, 0);
+  expect({ est, netto, sv, tipps }).toStrictEqual({
     est: 0,
     netto: income - uv,
     sv: uv,
