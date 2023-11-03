@@ -39,14 +39,14 @@ Hier könnt ihr den [111-Rechner](https://hundertelf.github.io/sv-steuer-rechner
 ## Installation
 
 ```bash
-npm install @hundertelf/sv-steuer-rechner
+npm install @hundert11/sv-steuer-rechner
 ```
 
 
 ## Usage
 
 ```js
-import calculate from '@hundertelf/sv-steuer-rechner';
+import calculate from '@hundert11/sv-steuer-rechner';
 
 const options = {
   year: 2021,
@@ -64,4 +64,3 @@ console.log(results); // { est, sv, netto, tipps };
 ---
 
 Made with ♡ in Salzburg.
-
