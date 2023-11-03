@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hundertelf/sv-steuer-rechner.git"
+    "url": "git+https://github.com/hundert11/sv-steuer-rechner.git"
   },
   "keywords": [
     "gewinnrechner",
@@ -21,9 +21,9 @@
   "author": "Betty Steger",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/hundertelf/sv-steuer-rechner/issues"
+    "url": "https://github.com/hundert11/sv-steuer-rechner/issues"
   },
-  "homepage": "https://github.com/hundertelf/sv-steuer-rechner#readme",
+  "homepage": "https://github.com/hundert11/sv-steuer-rechner#readme",
   "devDependencies": {
     "jest": "^27.0.4"
   },
