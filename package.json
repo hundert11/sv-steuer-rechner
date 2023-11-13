@@ -1,6 +1,6 @@
 {
   "name": "@hundert11/sv-steuer-rechner",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Calculates the real profit for an Austrian Freelancer",
   "main": "src/index.js",
   "type": "module",
