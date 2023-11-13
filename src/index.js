@@ -1,6 +1,6 @@
-import { defaultOptions } from './src/options.js';
-import { einkommensteuer } from './src/est.js';
-import { SVbeitrag } from './src/sv.js';
+import { defaultOptions } from './options.js';
+import { einkommensteuer } from './est.js';
+import { SVbeitrag } from './sv.js';
 
 
 // Einkommen laut Einkommensteuerbescheid
@@ -36,7 +36,7 @@ function profitOnEStBescheid(income, outgo, options) {
 }
 
 
-export function calculate(income, outgo, options = {}) {
+function calculate(income, outgo, options = {}) {
   options = Object.assign({}, defaultOptions, options);
   options.tipps = new Set();
   options.paidSv = options.paidSv || 0;
@@ -67,7 +67,9 @@ export function calculate(income, outgo, options = {}) {
     netto,
     tipps: [...options.tipps]
   };
-};
+}
+
+export { calculate };
 
 // set to global window, used for DEMO
 if(typeof window !== "undefined") {
