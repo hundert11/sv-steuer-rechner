@@ -69,7 +69,7 @@ function calculate(income, outgo, options = {}) {
   };
 }
 
-export { calculate };
+export default { calculate, profitOnEStBescheid };
 
 // set to global window, used for DEMO
 if(typeof window !== "undefined") {

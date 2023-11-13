@@ -46,7 +46,7 @@ npm install @hundert11/sv-steuer-rechner
 ## Usage
 
 ```js
-import calculate from '@hundert11/sv-steuer-rechner';
+import hundert11 from '@hundert11/sv-steuer-rechner';
 
 const options = {
   year: 2021,
@@ -57,7 +57,7 @@ const options = {
 const income = 30000;
 const outgo = 2000;
 
-const results = calculate(income, outgo, options);
+const results = hundert11.calculate(income, outgo, options);
 console.log(results); // { est, sv, netto, tipps };
 ```
 
