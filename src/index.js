@@ -1,11 +1,11 @@
 import { defaultOptions } from './options.js';
-import { einkommensteuer } from './est.js';
+import { einkommensteuer, freiBetragValues } from './est.js';
 import { SVbeitrag } from './sv.js';
 
 
 // Einkommen laut Einkommensteuerbescheid
 function profitOnEStBescheid(income, outgo, options) {
-  const freiBetragLimit = 30000;
+  const freiBetragLimit = freiBetragValues(options.year).limit;
   let value = income - outgo - options.paidSv;
 
   // Übersteigt der Gewinn 30.000 EUR kann zusätzlich zum Grundfreibetrag
@@ -28,9 +28,9 @@ function profitOnEStBescheid(income, outgo, options) {
     }
   }
 
-  value -= Math.min(value * 0.13, 3900); // - 13% Grundfreibetrag
+  value -= (Math.min(value, freiBetragLimit) * freiBetragValues(options.year).percentage); // - 15% Grundfreibetrag
   if(options.useInvestFreibetrag && options.investFreibetrag) {
-    value -= options.investFreibetrag; // - 13% Investitionsbedingter Gewinnfreibetrag
+    value -= options.investFreibetrag; // - 15% Investitionsbedingter Gewinnfreibetrag
   }
   return value;
 }
@@ -52,9 +52,11 @@ function calculate(income, outgo, options = {}) {
   const est = einkommensteuer(profit, options.year);
   let netto = Math.round(income - outgo - est - options.paidSv);
 
-  let maxInvestFreibetrag = parseInt((profit - 30000) * 0.13);
+  const freiBetragLimit = freiBetragValues(options.year).limit;
+  const freiBetragPercentage = freiBetragValues(options.year).percentage;
+  let maxInvestFreibetrag = parseInt((profit - freiBetragLimit) * freiBetragPercentage);
   if(options.useInvestFreibetrag) {
-    maxInvestFreibetrag = parseInt((profit + options.investFreibetrag - 30000) * 0.13);
+    maxInvestFreibetrag = parseInt((profit + options.investFreibetrag - freiBetragLimit) * freiBetragPercentage);
     netto -= options.investFreibetrag;
   }
 
