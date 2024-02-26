@@ -11,10 +11,10 @@ export function SVbeitrag(profit, options = {}) {
   const year = options.year; // current year
   let months = options.foundingYear === year ? 13-options.foundingMonth : 12;
 
-  // Wenn Sie weniger als 5.710,32 € Gewinn pro Jahr selbstständig erzielen, können Sie
+  // Wenn Sie weniger als 5.710,32 € (2021) Gewinn pro Jahr selbstständig erzielen, können Sie
   // sich bei der SVA von der Kranken- und Pensionsversicherung ausnehmen lassen.
   // Sie bezahlen dann für Ihre Selbstständigkeit nur mehr die Unfallversicherung.
-  if(profit < 5710.32) {
+  if(profit < fixValues[year].limit) {
     options.tipps.add('EXCLUDE_KV_PV');
     return {toPay: fixValues[year].uv * months};
   }
