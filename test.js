@@ -51,3 +51,25 @@ test('should NOT add tipp to increase SV-Beitrag in the founding year, if expect
   let outgo = income * 0.6;
   expect(hundert11.calculate(income, outgo).tipps.includes('INCREASE_SV')).toBe(false);
 });
+
+test('should return zero maxInvestFreibetrag because of 33.000 limit', () => {
+  let income = 40000;
+  let outgo = 7000;
+  expect(hundert11.calculate(income, outgo).maxInvestFreibetrag).toBe(0);
+});
+
+// Maximalausmaß von 46.400 EUR
+// @see https://www.wko.at/steuern/der-gewinnfreibetrag
+test('should return correct maxInvestFreibetrag for 2024', () => {
+  let income = 833000;
+  let outgo = 200000;
+  const grundfreibetrag = 4950;
+  expect(hundert11.calculate(income, outgo).maxInvestFreibetrag).toBe(46400 - grundfreibetrag);
+});
+
+test('should return correct maxInvestFreibetrag for 2023', () => {
+  let income = 833000;
+  let outgo = 200000;
+  const grundfreibetrag = 4500;
+  expect(hundert11.calculate(income, outgo, {year: 2023}).maxInvestFreibetrag).toBe(45950 - grundfreibetrag);
+});

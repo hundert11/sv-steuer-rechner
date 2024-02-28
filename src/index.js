@@ -1,14 +1,14 @@
 import { defaultOptions } from './options.js';
-import { einkommensteuer, freiBetragValues } from './est.js';
+import { einkommensteuer, freibetragValues, investGewinnfreibetrag } from './est.js';
 import { SVbeitrag } from './sv.js';
 
 
 // Einkommen laut Einkommensteuerbescheid
 function profitOnEStBescheid(income, outgo, options) {
-  const freiBetragLimit = freiBetragValues(options.year).limit;
+  const freiBetragLimit = freibetragValues(options.year).limit;
   let value = income - outgo - options.paidSv;
 
-  // Übersteigt der Gewinn 30.000 EUR kann zusätzlich zum Grundfreibetrag
+  // Übersteigt der Gewinn 33.000 EUR kann zusätzlich zum Grundfreibetrag
   // ein investitionsbedingter Gewinnfreibetrag geltend gemacht werden.
   if(options.useInvestFreibetrag && value <= freiBetragLimit) {
     options.useInvestFreibetrag = false;
@@ -28,7 +28,7 @@ function profitOnEStBescheid(income, outgo, options) {
     }
   }
 
-  value -= (Math.min(value, freiBetragLimit) * freiBetragValues(options.year).percentage); // - 15% Grundfreibetrag
+  value -= (Math.min(value, freiBetragLimit) * freibetragValues(options.year).percentage); // - 15% Grundfreibetrag
   if(options.useInvestFreibetrag && options.investFreibetrag) {
     value -= options.investFreibetrag; // - 15% Investitionsbedingter Gewinnfreibetrag
   }
@@ -52,11 +52,9 @@ function calculate(income, outgo, options = {}) {
   const est = einkommensteuer(profit, options.year);
   let netto = Math.round(income - outgo - est - options.paidSv);
 
-  const freiBetragLimit = freiBetragValues(options.year).limit;
-  const freiBetragPercentage = freiBetragValues(options.year).percentage;
-  let maxInvestFreibetrag = parseInt((profit - freiBetragLimit) * freiBetragPercentage);
+  const maxInvestFreibetrag = investGewinnfreibetrag(profit, options.year); // parseInt((profit - freiBetragLimit) * freiBetragPercentage);
+
   if(options.useInvestFreibetrag) {
-    maxInvestFreibetrag = parseInt((profit + options.investFreibetrag - freiBetragLimit) * freiBetragPercentage);
     netto -= options.investFreibetrag;
   }
 

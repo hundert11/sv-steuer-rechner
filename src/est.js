@@ -20,11 +20,38 @@ export function einkommensteuer(value, year) {
 // Gewinnfreibetrag
 // @see https://www.wko.at/steuern/der-gewinnfreibetrag
 // @see https://www.usp.gv.at/steuern-finanzen/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html
-export function freiBetragValues(year) {
+
+export function freibetragValues(year) {
   return {
     // Bis zur Veranlagung 2023 stand der Grundfreibetrag für Gewinne bis 30.000 €
     limit: year <= 2023 ? 30000 : 33000,
     // höchstens jedoch 13% bzw. ab 2022 15% des Betriebsgewinnes
-    percentage: year < 2022 ? 0.13 : 0.15
+    percentage: year < 2022 ? 0.13 : 0.15,
+    investLimitsAndPcts: [{limit: 145000, pct: 0.13}, {limit: 175000, pct: 0.07}, {limit: 230000, pct: 0.045}]
   }
+}
+
+/**
+ * Bei einer Bemessungsgrundlage von 33.000 EUR bis zu 178.000 EUR beträgt der investitionsbedingte Gewinnfreibetrag 13%.
+ * Wird dieser Betrag überschritten, steht für die nächsten 175.000 EUR ein Freibetrag von 7% und
+ * für weitere 230.000 EUR ein Freibetrag von 4,5% zu.
+ * Ab einer Bemessungsgrundlage von 583.000 EUR steht kein Gewinnfreibetrag mehr zu.
+ * Durch die Prozentstaffelung ergibt sich ein Maximalausmaß von 46.400 EUR.
+ */
+export function investGewinnfreibetrag(value, year) {
+  const { limit, investLimitsAndPcts } = freibetragValues(year);
+  if(value <= limit) {
+    return 0;
+  }
+  let freibetrag = 0;
+  let rest = parseInt(value) - limit; // - 33.000 € Grundfreibetrag
+
+  for(const limitAndPct of investLimitsAndPcts) {
+    if (rest <= limitAndPct.limit) {
+      break;
+    }
+    freibetrag += parseInt(Math.min(rest, limitAndPct.limit) * limitAndPct.pct);
+    rest -= limitAndPct.limit;
+  }
+  return freibetrag;
 }
