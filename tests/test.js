@@ -1,5 +1,5 @@
-import hundert11 from "../src/index.js";
-import { fixValues } from "../src/sv-values.js";
+import hundert11 from '../src/index.js';
+import { fixValues } from '../src/sv-values.js';
 
 // Wenn man weniger als 5.710,32 € Gewinn pro Jahr erzielt, kann man
 // sich bei der SVA von der KV+PV ausnehmen lassen. Man bezahlt dann nur die UV.
