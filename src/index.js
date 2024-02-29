@@ -52,8 +52,6 @@ function calculate(income, outgo, options = {}) {
   const est = einkommensteuer(profit, options.year);
   let netto = Math.round(income - outgo - est - options.paidSv);
 
-  const maxInvestFreibetrag = investGewinnfreibetrag(profit, options.year); // parseInt((profit - freiBetragLimit) * freiBetragPercentage);
-
   if(options.useInvestFreibetrag) {
     netto -= options.investFreibetrag;
   }
@@ -63,7 +61,7 @@ function calculate(income, outgo, options = {}) {
     sv: Math.round(sv.toPay),
     svAdditional: Math.round(sv.additionalPayment || 0),
     profit,
-    maxInvestFreibetrag,
+    maxInvestFreibetrag: investGewinnfreibetrag(profit, options.year),
     netto,
     tipps: [...options.tipps]
   };
