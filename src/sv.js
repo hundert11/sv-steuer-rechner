@@ -23,20 +23,20 @@ export function SVbeitrag(profit, options = {}) {
   let firstOrSecondYear = options.foundingYear === year || (options.foundingYear+1) === year;
 
   let kvGrundlage = fixValues[year].kvMinBeitragsgrundlage;
-  let svsGrundlage = fixValues[year].svsMinBeitragsgrundlage;
   let pvGrundlage = fixValues[year].pvMinBeitragsgrundlage;
+  let svsGrundlage = fixValues[year].svsMinBeitragsgrundlage;
 
   let _kvGrundlage = Math.max(fixValues[year].kvMinBeitragsgrundlage, Beitragsgrundlage);
   _kvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _kvGrundlage);
-  let _svsGrundlage = Math.max(fixValues[year].svsMinBeitragsgrundlage, Beitragsgrundlage);
-  _svsGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _svsGrundlage);
   let _pvGrundlage = Math.max(fixValues[year].pvMinBeitragsgrundlage, Beitragsgrundlage);
   _pvGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _pvGrundlage);
+  let _svsGrundlage = Math.max(fixValues[year].svsMinBeitragsgrundlage, Beitragsgrundlage);
+  _svsGrundlage = Math.min(fixValues[year].maxBeitragsgrundlage, _svsGrundlage);
 
   if(!firstOrSecondYear) {
     kvGrundlage = _kvGrundlage;
-    svsGrundlage = _svsGrundlage;
     pvGrundlage = _pvGrundlage;
+    svsGrundlage = _svsGrundlage;
   }
 
   const kv = kvGrundlage * percentages[year].kv;
@@ -48,7 +48,8 @@ export function SVbeitrag(profit, options = {}) {
   // SV Beitrag
   const toPay = (kv+pv+uv+svs) * months;
   // SV Nachzahlung
-  const additionalPayment = firstOrSecondYear ? (_pvGrundlage * percentages[year].pv - pv) * months : 0;
+  const additionalPayment = firstOrSecondYear ? (_kvGrundlage * percentages[year].kv - kv) * months : 0;
+  // const additionalPayment = firstOrSecondYear ? (_kvGrundlage * percentages[year].kv - kv + _pvGrundlage * percentages[year].pv - pv) * months : 0;
 
   if((toPay+additionalPayment) > options.paidSv) {
     options.tipps.add('INCREASE_SV');

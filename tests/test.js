@@ -22,6 +22,28 @@ test('should return zero ESt because of 11.000 limit', () => {
   expect(hundert11.calculate(income, outgo).est).toBe(0);
 });
 
+test('should return the correct SV-Beitrag for 10.000€ (older founding year)', () => {
+  const year = 2024;
+  const options = { year, foundingYear: 2020 };
+  let income = 10000;
+  let outgo = 1200;
+  expect(hundert11.calculate(income, outgo, options).sv).toBe(2497); // value from WKO SV-Beitrag Rechner
+
+  income = 10000;
+  outgo = 0; // testing -12% Basispauschalierung
+  expect(hundert11.calculate(income, outgo, options).sv).toBe(2497); // value from WKO SV-Beitrag Rechner
+});
+
+test('should return the correct SV-Nachzahlung for 10.000€ (year = founding year)', () => {
+  const year = 2024;
+  const options = { year, foundingYear: year };
+  let income = 10000;
+  let outgo = 1200;
+  let { sv, svAdditional } = hundert11.calculate(income, outgo, options);
+  expect(sv).toBe(1805); // values from WKO SV-Beitrag Rechner
+  // expect(svAdditional).toBe(240);
+});
+
 test('should add tipp to exclude KV/PV if profit is smaller than 5.710,32', () => {
   let income = 20000;
   let outgo = income - 1000;

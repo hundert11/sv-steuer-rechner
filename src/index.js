@@ -28,6 +28,8 @@ function profitOnEStBescheid(income, outgo, options) {
     }
   }
 
+  if (options.noGrundfreiBetrag) { return value; } // for profit for SV calculation
+
   value -= (Math.min(value, freiBetragLimit) * freibetragValues(options.year).percentage); // - 15% Grundfreibetrag
   if(options.useInvestFreibetrag && options.investFreibetrag) {
     value -= options.investFreibetrag; // - 15% Investitionsbedingter Gewinnfreibetrag
@@ -42,7 +44,10 @@ function calculate(income, outgo, options = {}) {
   options.paidSv = options.paidSv || 0;
 
   let profit = profitOnEStBescheid(income, outgo, options);
-  const sv = SVbeitrag(profit, options);
+  // Check if Gewinnfreibetrag should be subtracted when calculating SV
+  // @see https://github.com/orgs/hundert11/projects/1?pane=issue&itemId=35161424
+  let profitForSV = profitOnEStBescheid(income, outgo, {...options, noGrundfreiBetrag: true});
+  const sv = SVbeitrag(profitForSV, options);
 
   // if no user input, calculate profit based on SV estimate
   if(!options.paidSv) {

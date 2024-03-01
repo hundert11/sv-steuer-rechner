@@ -25,3 +25,19 @@ test('should return SV-Beitrag for the founding year', () => {
     svsMinBeitragsgrundlage * percentages.vorsorge
   ) * months);
 });
+
+test('should return the correct SV-Beitrag for 10.000€ (older founding year)', () => {
+  const year = 2024;
+  const options = { year, foundingYear: 2020, tipps: new Set() };
+  const profit = 10000;
+  expect(Math.round(SVbeitrag(profit, options).toPay)).toBe(2819); // value from WKO SV-Beitrag Rechner
+});
+
+test('should return the correct SV-Nachzahlung for 10.000€ (year = founding year)', () => {
+  const year = 2024;
+  const options = { year, foundingYear: year, tipps: new Set() };
+  const profit = 10000;
+  const { toPay, additionalPayment } = SVbeitrag(profit, options);
+  expect(Math.round(toPay)).toBe(1805); // values from WKO SV-Beitrag Rechner
+  // expect(Math.round(additionalPayment)).toBe(240); // ToDO: find the correct value
+});
