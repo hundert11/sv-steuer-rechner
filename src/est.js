@@ -1,11 +1,16 @@
 // Einkommensteuertarif
 // Ab dem Jahr 2023 werden - um der kalten Progression entgegenzuwirken - jährlich die Tarifstufen (außer die letzte ab 1 Million Euro) um zwei Drittel der Inflationsrate angepasst.
-// @see https://www.usp.gv.at/steuern-finanzen/einkommensteuer/tarifstufen.html
+// @see https://www.usp.gv.at/steuern-finanzen/einkommensteuer-ueberblick/weitere-informationen-est/tarifstufen.html
 
 export function einkommensteuer(value, year) {
   let limits = year >= 2023 ? [11693, 19134, 32075, 62080, 93120, 1000000] : [11000, 18000, 31000, 60000, 90000, 1000000];
   let percentages = [0, 0.25, 0.35, 0.42, 0.48, 0.5, 0.55]; // 2021 and below
 
+  // 2025: Alle Steuerstufen werden um knapp 4 Prozent angehoben.
+  // @see https://www.bmf.gv.at/presse/pressemeldungen/2024/juli/brunner-entlastung-2025.html
+  if (year >= 2025) {
+    limits = [13308, 21617, 35836, 69166, 103072, 1000000];
+  }
   if(year >= 2024) {
     percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55]; // reduce 0.41 to 0.4 from 2023 to 2024
   }
@@ -28,7 +33,7 @@ export function einkommensteuer(value, year) {
 
 // Gewinnfreibetrag
 // @see https://www.wko.at/steuern/der-gewinnfreibetrag
-// @see https://www.usp.gv.at/steuern-finanzen/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html
+// @see https://www.usp.gv.at/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html
 
 export function freibetragValues(year) {
   // Bis zur Veranlagung 2023 stand der Grundfreibetrag für Gewinne bis 30.000 €
