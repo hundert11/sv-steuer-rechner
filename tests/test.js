@@ -27,11 +27,17 @@ test('should return the correct SV-Beitrag for 10.000€ (older founding year)',
   const options = { year, foundingYear: 2020 };
   let income = 10000;
   let outgo = 1200;
-  expect(hundert11.calculate(income, outgo, options).sv).toBe(2497); // value from WKO SV-Beitrag Rechner
+  /**
+   * 2497 would be the value from WKO & haude Rechner, but they are
+   * NOT using 'Einkommen lt. EStB', therefore missing the substraction of Grundfreibetrag.
+   * I now expect the value from https://www.ea-tabelle.at/?from=2548 which is 2143.
+   */
+  const eaTabelleSvValue = 2143;
+  expect(hundert11.calculate(income, outgo, options).sv).toBe(eaTabelleSvValue);
 
   income = 10000;
   outgo = 0; // testing -12% Basispauschalierung
-  expect(hundert11.calculate(income, outgo, options).sv).toBe(2497); // value from WKO SV-Beitrag Rechner
+  expect(hundert11.calculate(income, outgo, options).sv).toBe(eaTabelleSvValue);
 });
 
 test('should return the correct SV-Nachzahlung for 10.000€ (year = founding year)', () => {
