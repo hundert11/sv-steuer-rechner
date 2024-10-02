@@ -1,6 +1,10 @@
 // Gewerbliche Sozialversicherungsbeiträge
 // @see https://www.wko.at/service/arbeitsrecht-sozialrecht/Gewerbliche-Sozialversicherungsbeitraege---Ausmass.html
 export const percentages = {
+  2025: {
+    pv: 0.185,    // 18,5% Pensionsversicherung
+    kv: 0.068     // 6,80% Krankenversicherung
+  },
   2024: {
     pv: 0.185,    // 18,5% Pensionsversicherung
     kv: 0.068     // 6,80% Krankenversicherung
@@ -44,9 +48,17 @@ export const percentages = {
 // unter D. Sozialversicherung der selbständig Erwerbstätigen
 // mit und ohne Mitgliedschaft in der Wirtschaftskammer sowie der freiberuflich selbständig Erwerbstätigen (Seite 14 oder 15 oder 16)
 // @see https://www.sozialversicherung.at/cdscontent/?contentid=10007.862683&portal=svportal
-// Einkunftsgrenze
+// Einkunftsgrenze = limit
 // @see https://www.svs.at/cdscontent/?contentid=10007.846813&portal=svsportal
 export const fixValues = {
+  2025: {
+    uv: 11.35, // TODO: check value in 2025
+    kvMinBeitragsgrundlage: 551.10,
+    pvMinBeitragsgrundlage: 551.10,
+    svsMinBeitragsgrundlage: 551.10,
+    maxBeitragsgrundlage: 7525,
+    limit: 6439.03 // TODO: check value in 2025
+  },
   2024: {
     uv: 11.35, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 518.44,

@@ -51,7 +51,7 @@ export function freibetragValues(year) {
   return {
     limit,
     percentage,
-    grundfreibetrag: limit * percentage,
+    grundfreibetrag: limit * percentage, // max
     investLimitsAndPcts: [{limit: 145000, pct: 0.13}, {limit: 175000, pct: 0.07}, {limit: 230000, pct: 0.045}]
   }
 }
