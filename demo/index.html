@@ -89,7 +89,7 @@
           <div class="columns">
             <div class="column field">
               <label class="label" for="income">
-                <span x-show="currentYear == options.year">Voraussichtliche</span> Einnahmen
+                <span x-show="currentYear <= options.year">Voraussichtliche</span> Einnahmen
               </label>
               <div class="control has-icons-left">
                 <input class="input" x-model.number="income" id="income" type="number" placeholder="30000" min="0" step="500">
@@ -101,7 +101,7 @@
             </div>
             <div class="column field">
               <label class="label" for="outgo">
-                <span x-show="currentYear == options.year">Voraussichtliche</span> Ausgaben
+                <span x-show="currentYear <= options.year">Voraussichtliche</span> Ausgaben
               </label>
               <div class="control has-icons-left">
                 <input class="input" x-model.number="outgo" id="outgo" type="number" placeholder="2000" min="0" step="100">
@@ -260,7 +260,7 @@
             <p>
               <a href="https://github.com/hundert11/sv-steuer-rechner/blob/main/src/sv.js#L22" target="_blank" class="has-text-primary mr-1" title="Show code"><i class="fas fa-calculator"></i></a>
               <b>Beitragsgrundlage SV =</b><br><i class="ml-5"></i>
-              Einkommen lt. ESt-Bescheid + bezahlte SV-Beiträge (Vorrauszahlungen)
+              Einkommen lt. ESt-Bescheid + bezahlte SV-Beiträge (Vorauszahlungen)
             </p>
           </div>
         </article>
