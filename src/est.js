@@ -1,6 +1,6 @@
 // Einkommensteuertarif
 // Ab dem Jahr 2023 werden - um der kalten Progression entgegenzuwirken - jährlich die Tarifstufen (außer die letzte ab 1 Million Euro) um zwei Drittel der Inflationsrate angepasst.
-// @see https://www.usp.gv.at/steuern-finanzen/einkommensteuer-ueberblick/weitere-informationen-est/tarifstufen.html
+// @see https://www.usp.gv.at/themen/steuern-finanzen/einkommensteuer-ueberblick/weitere-informationen-est/tarifstufen.html
 
 export function einkommensteuer(value, year) {
   let limits = [11000, 18000, 31000, 60000, 90000, 1000000]; // 2022 and below
@@ -41,7 +41,7 @@ export function einkommensteuer(value, year) {
 
 // Gewinnfreibetrag
 // @see https://www.wko.at/steuern/der-gewinnfreibetrag
-// @see https://www.usp.gv.at/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html
+// @see https://www.usp.gv.at/themen/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html
 
 export function freibetragValues(year) {
   // Bis zur Veranlagung 2023 stand der Grundfreibetrag für Gewinne bis 30.000 €
