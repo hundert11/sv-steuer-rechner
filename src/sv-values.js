@@ -52,12 +52,12 @@ export const percentages = {
 // @see https://www.svs.at/cdscontent/?contentid=10007.846813&portal=svsportal
 export const fixValues = {
   2025: {
-    uv: 11.35, // TODO: check value in 2025
+    uv: 12.07,
     kvMinBeitragsgrundlage: 551.10,
     pvMinBeitragsgrundlage: 551.10,
     svsMinBeitragsgrundlage: 551.10,
     maxBeitragsgrundlage: 7525,
-    limit: 6439.03 // TODO: check value in 2025
+    limit: 6613.2
   },
   2024: {
     uv: 11.35, // monatlich in € Unfallversicherung

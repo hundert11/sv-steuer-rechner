@@ -1,9 +1,24 @@
 import { einkommensteuer, freibetragValues, investGewinnfreibetrag } from '../src/est.js';
 
-test('should return 0 for 0-12816 income', () => {
-  expect(einkommensteuer(0, 2024)).toBe(0);
-  expect(einkommensteuer(12816, 2024)).toBe(0);
-  expect(einkommensteuer(12817, 2024)).not.toBe(0);
+test('should return 0 for 0-13308 income', () => {
+  expect(einkommensteuer(0, 2025)).toBe(0);
+  expect(einkommensteuer(13308, 2025)).toBe(0);
+  expect(einkommensteuer(13309, 2025)).not.toBe(0);
+});
+
+test('should return correct ESt for all levels in 2025', () => {
+  const limits = [13308, 21617, 35836, 69166, 103072, 1000000];
+  const percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
+  const levels = limits.map((limit, index) => {
+    return {
+      limit,
+      est: (limit - (index > 0 ? limits[index-1] : 0)) * percentages[index]
+    };
+  });
+  levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
+  levels.forEach((level) => {
+    expect(einkommensteuer(level.limit, 2025)).toBe(level.est);
+  });
 });
 
 test('should return correct ESt for all levels in 2024', () => {

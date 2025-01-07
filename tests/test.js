@@ -1,5 +1,6 @@
 import hundert11 from '../src/index.js';
 import { fixValues } from '../src/sv-values.js';
+import { freibetragValues } from '../src/est.js';
 
 // Wenn man weniger als 5.710,32 € Gewinn pro Jahr erzielt, kann man
 // sich bei der SVA von der KV+PV ausnehmen lassen. Man bezahlt dann nur die UV.
@@ -46,8 +47,10 @@ test('should return the correct SV-Nachzahlung for 10.000€ (year = founding ye
   let income = 10000;
   let outgo = 1200;
   let { sv, svAdditional } = hundert11.calculate(income, outgo, options);
-  expect(sv).toBe(1805); // values from WKO SV-Beitrag Rechner
-  // expect(svAdditional).toBe(240);
+  const haudeSvValues = [1805, 429]; // values from WKO & haude Rechner
+  // both values from https://www.ea-tabelle.at/?from=2548
+  expect(sv).toBe(haudeSvValues[0]);
+  // expect(svAdditional).toBe(haudeSvValues[1]);
 });
 
 test('should add tipp to exclude KV/PV if profit is smaller than 5.710,32', () => {
@@ -91,13 +94,15 @@ test('should return zero maxInvestFreibetrag because of 33.000 limit', () => {
 test('should return correct maxInvestFreibetrag for 2024', () => {
   let income = 833000;
   let outgo = 200000;
-  const grundfreibetrag = 4950;
+  const { grundfreibetrag } = freibetragValues(2024); // = 4950
+  expect(grundfreibetrag).toBe(4950);
   expect(hundert11.calculate(income, outgo).maxInvestFreibetrag).toBe(46400 - grundfreibetrag);
 });
 
 test('should return correct maxInvestFreibetrag for 2023', () => {
   let income = 833000;
   let outgo = 200000;
-  const grundfreibetrag = 4500;
+  const { grundfreibetrag } = freibetragValues(2023); // = 4500
+  expect(grundfreibetrag).toBe(4500);
   expect(hundert11.calculate(income, outgo, {year: 2023}).maxInvestFreibetrag).toBe(45950 - grundfreibetrag);
 });
