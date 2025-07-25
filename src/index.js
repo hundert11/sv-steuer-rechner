@@ -1,5 +1,5 @@
 import { defaultOptions } from './options.js';
-import { einkommensteuer, freibetragValues, investGewinnfreibetrag } from './est.js';
+import { einkommensteuer, pauschalierungValues, freibetragValues, investGewinnfreibetrag } from './est.js';
 import { SVbeitrag } from './sv.js';
 
 
@@ -17,7 +17,7 @@ function profitOnEStBescheid(income, outgo, options) {
   // Wird der Gewinn mittels einer Pauschalierung ermittelt, wird der Grundfreibetrag automatisch angerechnet.
   // Die Geltendmachung des investitionsbedingten Gewinnfreibetrages ist jedoch nicht zulässig.
   if(!options.useInvestFreibetrag) {
-    const pauschalierung = Math.min(income * 0.12, 26400);
+    const pauschalierung = Math.min(income * pauschalierungValues(options.year).percentage, pauschalierungValues(options.year).max);
     if(pauschalierung > outgo) {
       // -12% Basispauschalierung (wenn Ausgaben nicht höher)
       value = income - pauschalierung - options.paidSv;

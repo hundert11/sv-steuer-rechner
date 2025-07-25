@@ -39,6 +39,24 @@ export function einkommensteuer(value, year) {
   return est;
 }
 
+/**
+ * Basispauschalierung
+ * Im Rahmen der Basispauschalierung ist vorgesehen, die Umsatzgrenze für das Veranlagungsjahr 2025 von derzeit 220.000 Euro auf 320.000 Euro anzuheben.
+ * Gleichzeitig soll das Betriebsausgabenpauschale von bislang 12 % auf 13,5 % der Umsätze steigen.
+ * Ab dem Veranlagungsjahr 2026 ist eine weitere Erhöhung der Umsatzgrenze auf 420.000 Euro sowie des Betriebsausgabenpauschales auf 15 % geplant.
+ * @see https://www.wko.at/steuern/basispauschalierung
+ * @see https://www.wko.at/steuern/budgetbegleitgesetz-2025#heading_basispauschalierung_fuer_gewerbetreibende_und_freiberufler
+ */
+export function pauschalierungValues(year) {
+  const limit = year <= 2024 ? 220000 : year === 2025 ? 320000 : 420000;
+  const percentage = year <= 2024 ? 0.12 : year === 2025 ? 0.135 : 0.15; // 12% bis 2024, 13,5% in 2025, 15% ab 2026
+  return {
+    limit,
+    percentage,
+    max: limit * percentage
+  }
+}
+
 // Gewinnfreibetrag
 // @see https://www.wko.at/steuern/der-gewinnfreibetrag
 // @see https://www.usp.gv.at/themen/steuern-finanzen/steuerliche-gewinnermittlung/weitere-informationen-zur-steuerlichen-gewinnermittlung/betriebseinnahmen-und-ausgaben/gewinnfreibetrag.html

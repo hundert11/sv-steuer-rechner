@@ -1,6 +1,6 @@
 import hundert11 from '../src/index.js';
 import { fixValues } from '../src/sv-values.js';
-import { freibetragValues } from '../src/est.js';
+import { pauschalierungValues, freibetragValues } from '../src/est.js';
 
 // Wenn man weniger als 5.710,32 € Gewinn pro Jahr erzielt, kann man
 // sich bei der SVA von der KV+PV ausnehmen lassen. Man bezahlt dann nur die UV.
@@ -24,8 +24,7 @@ test('should return zero ESt because of 11.000 limit', () => {
 });
 
 test('should return the correct SV-Beitrag for 10.000€ (older founding year)', () => {
-  const year = 2024;
-  const options = { year, foundingYear: 2020 };
+  const options = { year: 2024, foundingYear: 2020 };
   let income = 10000;
   let outgo = 1200;
   /**
@@ -60,14 +59,16 @@ test('should add tipp to exclude KV/PV if profit is smaller than 5.710,32', () =
 });
 
 test('should add tipp to use Pauschalierung when outgo is less than 12%', () => {
+  const year = new Date().getFullYear();
   let income = 20000;
-  let outgo = income * 0.12 - 1000;
+  let outgo = income * pauschalierungValues(year).percentage - 1;
   expect(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG')).toBe(true);
 });
 
 test('should NOT add tipp to use Pauschalierung when outgo is more than 12%', () => {
+  const year = new Date().getFullYear();
   let income = 20000;
-  let outgo = income * 0.12 + 1000;
+  let outgo = income * pauschalierungValues(year).percentage + 1;
   expect(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG')).toBe(false);
 });
 
