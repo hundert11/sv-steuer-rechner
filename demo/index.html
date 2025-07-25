@@ -208,12 +208,12 @@
             <div class="message-body">
               💡 &nbsp;<span x-text="{USE_PAUSCHALIERUNG: 'Nutze die Basispauschalierung', EXCLUDE_KV_PV: 'Befreie dich von Kranken- und Pensionsversicherung', INCREASE_SV: 'Erhöhe deine SV-Beiträge', USE_INVESTFREIBETRAG: 'Nutze den investitionsbedingten Gewinnfreibetrag'}[tipp]"></span>
 
-              <span x-show="tipp == 'USE_PAUSCHALIERUNG'" x-init="percentage = (options.year <= 2024 ? 0.12 : options.year === 2025 ? 0.135 : 0.15)">
+              <span x-show="tipp == 'USE_PAUSCHALIERUNG'" x-init="percentage = (options.year <= 2024 ? 0.12 : options.year === 2025 ? 0.135 : 0.15); max = (options.year <= 2024 ? 26400 : options.year === 2025 ? 43200 : 63000)">
                 <a href="https://www.wko.at/steuern/basispauschalierung" target="_blank"
                   class="text-gray-500 hover:text-gray-900" title="öffnet wko.at"><i class="fa fa-info-circle"></i></a>
                 <span class="is-pulled-right has-text-right is-size-7">
                   Wird für die Rechnung oben autom. verwendet! Reelle Ausgaben <span x-text="outgo ? outgo.toLocaleString() : 0"></span> €<br>
-                  vs. Betriebsausgabenpauschale: <span x-text="percentage"></span>% * Einkommen = <span x-text="(income*percentage).toLocaleString()"></span> €
+                  vs. Betriebsausgabenpauschale: <span x-text="(percentage*100).toLocaleString()"></span>% * Einkommen = <span x-text="Math.min(income*percentage, max).toLocaleString()"></span> €
                 </span>
               </span>
 
