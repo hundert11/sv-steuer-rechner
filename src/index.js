@@ -19,7 +19,7 @@ function profitOnEStBescheid(income, outgo, options) {
   if(!options.useInvestFreibetrag) {
     const pauschalierung = Math.min(income * pauschalierungValues(options.year).percentage, pauschalierungValues(options.year).max);
     if(pauschalierung > outgo) {
-      // -12% Basispauschalierung (wenn Ausgaben nicht höher)
+      // -15% Basispauschalierung (wenn Ausgaben nicht höher)
       value = income - pauschalierung - options.paidSv;
       options.tipps.add('USE_PAUSCHALIERUNG');
     }
