@@ -30,7 +30,7 @@ test('should return the correct SV-Beitrag for 10.000€ (older founding year)',
   /**
    * 2497 would be the value from WKO & haude Rechner, but they are
    * NOT using 'Einkommen lt. EStB', therefore missing the substraction of Grundfreibetrag.
-   * I now expect the value from https://www.ea-tabelle.at/?from=2548 which is 2143.
+   * I now expect the value from https://www.tabelle.at/?from=2548 which is 2143.
    */
   const eaTabelleSvValue = 2143;
   expect(hundert11.calculate(income, outgo, options).sv).toBe(eaTabelleSvValue);
@@ -47,7 +47,7 @@ test('should return the correct SV-Nachzahlung for 10.000€ (year = founding ye
   let outgo = 1200;
   let { sv, svAdditional } = hundert11.calculate(income, outgo, options);
   const haudeSvValues = [1805, 429]; // values from WKO & haude Rechner
-  // both values from https://www.ea-tabelle.at/?from=2548
+  // both values from https://www.tabelle.at/?from=2548
   expect(sv).toBe(haudeSvValues[0]);
   // expect(svAdditional).toBe(haudeSvValues[1]);
 });
