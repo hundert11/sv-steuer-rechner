@@ -1,3 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
 import hundert11 from '../src/index.js';
 import { fixValues } from '../src/sv-values.js';
 import { pauschalierungValues, freibetragValues } from '../src/est.js';
@@ -9,7 +11,7 @@ test('should return taxfree income if small profit', () => {
   let uv = Math.round(fixValues[(new Date().getFullYear())].uv * 12);
 
   const { est, netto, sv, tipps } = hundert11.calculate(income, 0);
-  expect({ est, netto, sv, tipps }).toStrictEqual({
+  assert.deepStrictEqual({ est, netto, sv, tipps }, {
     est: 0,
     netto: income - uv,
     sv: uv,
@@ -20,7 +22,7 @@ test('should return taxfree income if small profit', () => {
 test('should return zero ESt because of 11.000 limit', () => {
   let income = 20000;
   let outgo = 9000;
-  expect(hundert11.calculate(income, outgo).est).toBe(0);
+  assert.equal(hundert11.calculate(income, outgo).est, 0);
 });
 
 test('should return the correct SV-Beitrag for 10.000€ (older founding year)', () => {
@@ -33,11 +35,11 @@ test('should return the correct SV-Beitrag for 10.000€ (older founding year)',
    * I now expect the value from https://www.tabelle.at/?from=2548 which is 2143.
    */
   const eaTabelleSvValue = 2143;
-  expect(hundert11.calculate(income, outgo, options).sv).toBe(eaTabelleSvValue);
+  assert.equal(hundert11.calculate(income, outgo, options).sv, eaTabelleSvValue);
 
   income = 10000;
   outgo = 0; // testing -12% Basispauschalierung
-  expect(hundert11.calculate(income, outgo, options).sv).toBe(eaTabelleSvValue);
+  assert.equal(hundert11.calculate(income, outgo, options).sv, eaTabelleSvValue);
 });
 
 test('should return the correct SV-Nachzahlung for 10.000€ (year = founding year)', () => {
@@ -45,49 +47,49 @@ test('should return the correct SV-Nachzahlung for 10.000€ (year = founding ye
   const options = { year, foundingYear: year };
   let income = 10000;
   let outgo = 1200;
-  let { sv, svAdditional } = hundert11.calculate(income, outgo, options);
+  let { sv } = hundert11.calculate(income, outgo, options);
   const haudeSvValues = [1805, 429]; // values from WKO & haude Rechner
   // both values from https://www.tabelle.at/?from=2548
-  expect(sv).toBe(haudeSvValues[0]);
+  assert.equal(sv, haudeSvValues[0]);
   // expect(svAdditional).toBe(haudeSvValues[1]);
 });
 
 test('should add tipp to exclude KV/PV if profit is smaller than 5.710,32', () => {
   let income = 20000;
   let outgo = income - 1000;
-  expect(hundert11.calculate(income, outgo).tipps.includes('EXCLUDE_KV_PV')).toBe(true);
+  assert.equal(hundert11.calculate(income, outgo).tipps.includes('EXCLUDE_KV_PV'), true);
 });
 
 test('should add tipp to use Pauschalierung when outgo is less than 12%', () => {
   const year = new Date().getFullYear();
   let income = 20000;
   let outgo = income * pauschalierungValues(year).percentage - 1;
-  expect(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG')).toBe(true);
+  assert.equal(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG'), true);
 });
 
 test('should NOT add tipp to use Pauschalierung when outgo is more than 12%', () => {
   const year = new Date().getFullYear();
   let income = 20000;
   let outgo = income * pauschalierungValues(year).percentage + 1;
-  expect(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG')).toBe(false);
+  assert.equal(hundert11.calculate(income, outgo).tipps.includes('USE_PAUSCHALIERUNG'), false);
 });
 
 test('should add tipp to increase SV-Beitrag in the founding year, if expected income is big', () => {
   let income = 35000;
   let outgo = income * 0.6;
-  expect(hundert11.calculate(income, outgo).tipps.includes('INCREASE_SV')).toBe(true);
+  assert.equal(hundert11.calculate(income, outgo).tipps.includes('INCREASE_SV'), true);
 });
 
 test('should NOT add tipp to increase SV-Beitrag in the founding year, if expected income is small', () => {
   let income = 10000;
   let outgo = income * 0.6;
-  expect(hundert11.calculate(income, outgo).tipps.includes('INCREASE_SV')).toBe(false);
+  assert.equal(hundert11.calculate(income, outgo).tipps.includes('INCREASE_SV'), false);
 });
 
 test('should return zero maxInvestFreibetrag because of 33.000 limit', () => {
   let income = 40000;
   let outgo = 7000;
-  expect(hundert11.calculate(income, outgo).maxInvestFreibetrag).toBe(0);
+  assert.equal(hundert11.calculate(income, outgo).maxInvestFreibetrag, 0);
 });
 
 // Maximalausmaß von 46.400 EUR
@@ -96,14 +98,14 @@ test('should return correct maxInvestFreibetrag for 2024', () => {
   let income = 833000;
   let outgo = 200000;
   const { grundfreibetrag } = freibetragValues(2024); // = 4950
-  expect(grundfreibetrag).toBe(4950);
-  expect(hundert11.calculate(income, outgo).maxInvestFreibetrag).toBe(46400 - grundfreibetrag);
+  assert.equal(grundfreibetrag, 4950);
+  assert.equal(hundert11.calculate(income, outgo).maxInvestFreibetrag, 46400 - grundfreibetrag);
 });
 
 test('should return correct maxInvestFreibetrag for 2023', () => {
   let income = 833000;
   let outgo = 200000;
   const { grundfreibetrag } = freibetragValues(2023); // = 4500
-  expect(grundfreibetrag).toBe(4500);
-  expect(hundert11.calculate(income, outgo, {year: 2023}).maxInvestFreibetrag).toBe(45950 - grundfreibetrag);
+  assert.equal(grundfreibetrag, 4500);
+  assert.equal(hundert11.calculate(income, outgo, {year: 2023}).maxInvestFreibetrag, 45950 - grundfreibetrag);
 });

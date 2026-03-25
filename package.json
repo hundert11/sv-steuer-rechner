@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "node --test tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,5 @@
   "bugs": {
     "url": "https://github.com/hundert11/sv-steuer-rechner/issues"
   },
-  "homepage": "https://github.com/hundert11/sv-steuer-rechner#readme",
-  "devDependencies": {
-    "jest": "^29.7.0"
-  },
-  "jest": {
-    "transform": {}
-  }
+  "homepage": "https://github.com/hundert11/sv-steuer-rechner#readme"
 }

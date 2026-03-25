@@ -1,9 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
 import { einkommensteuer, freibetragValues, investGewinnfreibetrag } from '../src/est.js';
 
 test('should return 0 for 0-13308 income', () => {
-  expect(einkommensteuer(0, 2025)).toBe(0);
-  expect(einkommensteuer(13308, 2025)).toBe(0);
-  expect(einkommensteuer(13309, 2025)).not.toBe(0);
+  assert.equal(einkommensteuer(0, 2025), 0);
+  assert.equal(einkommensteuer(13308, 2025), 0);
+  assert.notEqual(einkommensteuer(13309, 2025), 0);
 });
 
 test('should return correct ESt for all levels in 2025', () => {
@@ -17,7 +19,7 @@ test('should return correct ESt for all levels in 2025', () => {
   });
   levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
   levels.forEach((level) => {
-    expect(einkommensteuer(level.limit, 2025)).toBe(level.est);
+    assert.equal(einkommensteuer(level.limit, 2025), level.est);
   });
 });
 
@@ -32,7 +34,7 @@ test('should return correct ESt for all levels in 2024', () => {
   });
   levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
   levels.forEach((level) => {
-    expect(einkommensteuer(level.limit, 2024)).toBe(level.est);
+    assert.equal(einkommensteuer(level.limit, 2024), level.est);
   });
 });
 
@@ -47,7 +49,7 @@ test('should return correct ESt for all levels in 2023', () => {
   });
   levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
   levels.forEach((level) => {
-    expect(einkommensteuer(level.limit, 2023)).toBe(level.est);
+    assert.equal(einkommensteuer(level.limit, 2023), level.est);
   });
 });
 
@@ -62,7 +64,7 @@ test('should return correct ESt for all levels in 2022', () => {
   });
   levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
   levels.forEach((level) => {
-    expect(einkommensteuer(level.limit, 2022)).toBe(level.est);
+    assert.equal(einkommensteuer(level.limit, 2022), level.est);
   });
 });
 
@@ -78,7 +80,7 @@ test('should return correct ESt for all levels + 1€ in 2024', () => {
   });
   levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
   levels.forEach((level, i) => {
-    expect(Math.round(einkommensteuer(level.amount + 1, 2024))).toBe(Math.round(
+    assert.equal(Math.round(einkommensteuer(level.amount + 1, 2024)), Math.round(
       level.est + (levels[i+1] ? levels[i+1].pct : level.pct) // 1€ = next percentage
     ));
   });
@@ -89,11 +91,11 @@ test('should return correct ESt for all levels + 1€ in 2024', () => {
 test('should return correct investGewinnfreibetrag for 2024', () => {
   const profit = 633000;
   const { grundfreibetrag } = freibetragValues(2024);
-  expect(investGewinnfreibetrag(profit, 2024)).toBe(46400 - grundfreibetrag);
+  assert.equal(investGewinnfreibetrag(profit, 2024), 46400 - grundfreibetrag);
 });
 
 test('should return correct maxInvestFreibetrag for 2023', () => {
   const profit = 633000;
   const { grundfreibetrag } = freibetragValues(2023);
-  expect(investGewinnfreibetrag(profit, 2023)).toBe(45950 - grundfreibetrag);
+  assert.equal(investGewinnfreibetrag(profit, 2023), 45950 - grundfreibetrag);
 });
