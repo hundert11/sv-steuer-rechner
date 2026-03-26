@@ -19,10 +19,12 @@ export function einkommensteuer(value, year) {
       limits = [12816, 20818, 34513, 66612, 99266, 1000000];
       percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55]; // reduce 0.41 to 0.4 from 2023 to 2024
       break;
-    // 2025: Alle Steuerstufen werden um knapp 4 Prozent angehoben.
-    // @see https://www.bmf.gv.at/presse/pressemeldungen/2024/juli/brunner-entlastung-2025.html
     case 2025:
       limits = [13308, 21617, 35836, 69166, 103072, 1000000];
+      percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
+      break;
+    case 2026:
+      limits = [13539, 21992, 36458, 70365, 104859, 1000000];
       percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
       break;
     default:

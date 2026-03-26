@@ -2,10 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { einkommensteuer, freibetragValues, investGewinnfreibetrag } from '../src/est.js';
 
-test('should return 0 for 0-13308 income', () => {
-  assert.equal(einkommensteuer(0, 2025), 0);
-  assert.equal(einkommensteuer(13308, 2025), 0);
-  assert.notEqual(einkommensteuer(13309, 2025), 0);
+test('should return 0 for 0-13539 income', () => {
+  assert.equal(einkommensteuer(0, 2026), 0);
+  assert.equal(einkommensteuer(13539, 2026), 0);
+  assert.notEqual(einkommensteuer(13540, 2026), 0);
+});
+
+test('should return correct ESt for all levels in 2026', () => {
+  const limits = [13539, 21992, 36458, 70365, 104859, 1000000];
+  const percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
+  const levels = limits.map((limit, index) => {
+    return {
+      limit,
+      est: (limit - (index > 0 ? limits[index-1] : 0)) * percentages[index]
+    };
+  });
+  levels.forEach((level, i) => { level.est += (levels[i-1] ? levels[i-1].est : 0); });
+  levels.forEach((level) => {
+    assert.equal(einkommensteuer(level.limit, 2026), level.est);
+  });
 });
 
 test('should return correct ESt for all levels in 2025', () => {
