@@ -1,52 +1,14 @@
 // Gewerbliche Sozialversicherungsbeiträge
 // @see https://www.wko.at/service/arbeitsrecht-sozialrecht/Gewerbliche-Sozialversicherungsbeitraege---Ausmass.html
-export const percentages = {
-  2026: {
-    pv: 0.185,    // 18,5% Pensionsversicherung
-    kv: 0.068     // 6,80% Krankenversicherung
-  },
-  2025: {
-    pv: 0.185,    // 18,5% Pensionsversicherung
-    kv: 0.068     // 6,80% Krankenversicherung
-  },
-  2024: {
-    pv: 0.185,    // 18,5% Pensionsversicherung
-    kv: 0.068     // 6,80% Krankenversicherung
-  },
-  2023: {
-    pv: 0.185,    // 18,5% Pensionsversicherung
-    kv: 0.068     // 6,80% Krankenversicherung
-  },
-  2022: {
-    pv: 0.185,
-    kv: 0.068
-  },
-  2021: {
-    pv: 0.185,
-    kv: 0.068
-  },
-  2020: {
-    pv: 0.185,
-    kv: 0.068
-  },
-  2019: {
-    pv: 0.185,
-    kv: 0.0765
-  },
-  2018: {
-    pv: 0.185,
-    kv: 0.0765
-  },
-  2017: {
-    pv: 0.185,
-    kv: 0.0765
-  },
-  2016: {
-    pv: 0.185,
-    kv: 0.0765
-  },
-  vorsorge: 0.0153,  // 1,53% Selbständigenvorsorge
-};
+export function percentages(year) {
+  const kv = year <= 2019 ? 0.0765 : 0.068;
+
+  return {
+    pv: 0.185,        // 18,5% Pensionsversicherung
+    kv,               // 6,80% Krankenversicherung ab 2020, davor 7,65%
+    vorsorge: 0.0153  // 1,53% Selbständigenvorsorge
+  };
+}
 
 // Beitragsrechtlichen Werte in der Sozialversicherung.
 // unter D. Sozialversicherung der selbständig Erwerbstätigen

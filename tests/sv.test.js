@@ -22,9 +22,9 @@ test('should return SV-Beitrag for the founding year', () => {
 
   assert.ok(Math.abs(SVbeitrag(profitOnEStBescheid, options).toPay - (
     uv +
-    kvMinBeitragsgrundlage * percentages[year].kv +
-    pvMinBeitragsgrundlage * percentages[year].pv +
-    svsMinBeitragsgrundlage * percentages.vorsorge
+    kvMinBeitragsgrundlage * percentages(year).kv +
+    pvMinBeitragsgrundlage * percentages(year).pv +
+    svsMinBeitragsgrundlage * percentages(year).vorsorge
   ) * months) < 0.005);
 });
 

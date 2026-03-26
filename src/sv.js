@@ -1,5 +1,5 @@
 import { defaultOptions } from './options.js';
-import { percentages, fixValues } from './sv-values.js';
+import { fixValues, percentages } from './sv-values.js';
 
 // Beitrag = Beitragsgrundlage x Beitragssatz
 // Beitragsgrundlage = Einkommen lt. EStB des jeweiligen Jahres, zuzügl. Hinzurrechnungsbeträge
@@ -32,10 +32,10 @@ export function SVbeitrag(profit, options = {}) {
     svsGrundlage = fixValues[year].svsMinBeitragsgrundlage;
   }
 
-  let kv = kvGrundlage * percentages[year].kv;
-  let pv = pvGrundlage * percentages[year].pv;
+  let kv = kvGrundlage * percentages(year).kv;
+  let pv = pvGrundlage * percentages(year).pv;
   const uv = fixValues[year].uv;
-  const svs = svsGrundlage * percentages.vorsorge;
+  const svs = svsGrundlage * percentages(year).vorsorge;
   // console.log('Werte pro Monat -->', 'kv:', kv, 'pv:', pv, 'uv:', uv, 'svs:', svs);
 
   // SV Beitrag
@@ -47,8 +47,8 @@ export function SVbeitrag(profit, options = {}) {
     Beitragsgrundlage = (profit - toPay) / months;
     kvGrundlage = setGrundlage('kv', year, Beitragsgrundlage);
     pvGrundlage = setGrundlage('pv', year, Beitragsgrundlage);
-    kv = kvGrundlage * percentages[year].kv - kv;
-    pv = pvGrundlage * percentages[year].pv - pv;
+    kv = kvGrundlage * percentages(year).kv - kv;
+    pv = pvGrundlage * percentages(year).pv - pv;
     additionalPayment = (kv+pv) * months;
   }
 
