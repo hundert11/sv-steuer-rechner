@@ -23,7 +23,7 @@ export const fixValues = {
     pvMinBeitragsgrundlage: 551.10,
     svsMinBeitragsgrundlage: 551.10,
     maxBeitragsgrundlage: 8085,
-    limit: 6613.2 // TODO: 2026 limit is not yet known
+    limit: 6613.2
   },
   2025: {
     uv: 12.07,

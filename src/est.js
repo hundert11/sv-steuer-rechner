@@ -47,7 +47,6 @@ export function einkommensteuer(value, year) {
  * Gleichzeitig soll das Betriebsausgabenpauschale von bislang 12 % auf 13,5 % der Umsätze steigen.
  * Ab dem Veranlagungsjahr 2026 ist eine weitere Erhöhung der Umsatzgrenze auf 420.000 Euro sowie des Betriebsausgabenpauschales auf 15 % geplant.
  * @see https://www.wko.at/steuern/basispauschalierung
- * @see https://www.wko.at/steuern/budgetbegleitgesetz-2025#heading_basispauschalierung_fuer_gewerbetreibende_und_freiberufler
  */
 export function pauschalierungValues(year) {
   const limit = year <= 2024 ? 220000 : year === 2025 ? 320000 : 420000;
