@@ -28,7 +28,7 @@ Viele wissen nicht, dass es die [Betriebsausgabenpauschale](https://www.wko.at/s
 
 3. **Nettoeinkommen ohne SV-Nachzahlung**  
 Ich finde, der WKO-Rechner gibt "falsche" Tipps, ein Beispiel: "In den Folgejahren ist eine Nachzahlung zur Sozialversicherung in Höhe von € 10.000 zu erwarten." Wieso nicht gleich für dieses Jahr den SV-Beitrag erhöhen, dadurch vermindert sich auch der steuerliche Gewinn und ich habe im nächsten Jahr keine große Überraschung.
-**Das Problem für Neugründer:** Ihr werdet in den ersten 2 Jahren weit unten für die Krankenversicherungbeiträge eingestuft! Die endgültige Berechnung erfolgt erst im 3. Jahr, was zu hohen Nachzahlungen führen kann.
+**Das Problem für Neugründer:** Ihr zahlt in den ersten 2 Jahren nur die Mindestbeiträge! In der Krankenversicherung ist das für Gewerbetreibende (WKO-Mitglieder) endgültig, in der Pensionsversicherung wird aber nachbemessen, sobald der Einkommensteuerbescheid vorliegt. Das führt im 3. oder 4. Jahr zu hohen Nachzahlungen, weil dann die Nachzahlungen für Jahr 1 und 2 zusätzlich zu den laufenden Beiträgen fällig werden.
 
 
 ## [Demo](https://hundert11.github.io/sv-steuer-rechner/demo/)

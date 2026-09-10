@@ -31,21 +31,63 @@ test('should return SV-Beitrag for the founding year', () => {
 test('should return the correct SV-Beitrag for 10.000€ (older founding year)', () => {
   const year = 2024;
   const options = { year, foundingYear: 2020, tipps: new Set() };
-  const profit = 10000; // = Einkommen lt. EStB
-  const haudeSvValue = 2819; // value from haude Rechner (can use the value here because it's not based on ESt)
-  assert.equal(Math.round(SVbeitrag(profit, options).toPay), haudeSvValue);
+  const profit = 10000; // Gewinn vor SV-Beiträgen
+  // Der WKO/haude Rechner liefert 2819 (Beitragsgrundlage = 10.000 / 12 ohne Abzug von UV und Selbständigenvorsorge).
+  // Beitragsgrundlage = Einkünfte lt. EStB + Hinzurechnung KV/PV = Gewinn vor SV - UV - Selbständigenvorsorge
+  const { uv } = fixValues[year];
+  const svs = (profit / 12) * percentages(year).vorsorge;
+  const grundlage = (profit - (uv + svs) * 12) / 12;
+  const expected = (grundlage * (percentages(year).kv + percentages(year).pv) + uv + svs) * 12;
+  assert.equal(Math.round(SVbeitrag(profit, options).toPay), Math.round(expected)); // 2746
 });
 
 // https://blog.hellerconsult.com/wie-wird-die-sva-berechnet-und-mit-welchen-nachzahlungen-muss-ich-rechnen/
 test('should return the correct SV-Nachzahlung for 10.000€ (year = founding year)', () => {
   const year = 2024;
   const options = { year, foundingYear: year, tipps: new Set() };
-  const profit = 10000; // = Einkommen lt. EStB
-  const haudeSvValues = [1805, 429]; // values from WKO & haude Rechner
+  const profit = 10000; // Gewinn vor SV-Beiträgen
   const { toPay, additionalPayment } = SVbeitrag(profit, options);
-  assert.equal(Math.round(toPay), haudeSvValues[0]);
-  // somehow the additional payment is not exactly the same as in the haude Rechner
-  // we've got 499 instead of 429, TODO: check why there is a 70€ difference
-  assert.ok(Math.round(additionalPayment) > haudeSvValues[1]);
-  assert.ok(Math.round(additionalPayment) < haudeSvValues[1] + 100);
+  assert.equal(Math.round(toPay), 1805); // value from WKO & haude Rechner
+  // In den ersten beiden Jahren wird nur die PV nachbemessen (KV-Mindestbeitragsgrundlage ist endgültig).
+  // Endgültige Beitragsgrundlage = Einkünfte lt. EStB (Gewinn - SV) + Hinzurechnung der KV- und PV-Beiträge
+  const { uv, pvMinBeitragsgrundlage, svsMinBeitragsgrundlage } = fixValues[year];
+  const grundlage = (profit - (uv + svsMinBeitragsgrundlage * percentages(year).vorsorge) * 12) / 12;
+  const expected = (grundlage - pvMinBeitragsgrundlage) * percentages(year).pv * 12;
+  assert.ok(Math.abs(additionalPayment - expected) < 0.005);
+});
+
+// Vergleich mit dem WKO-Rechner (https://svrechner.wko.at/), Stand 2026:
+// Gründung Januar 2026, Gewerbetreibender, Umsatz 30.000 €, Aufwände 5.000 €
+// -> Gewinn vor Steuern 19.609 €, SV-Beitrag 1.930 €, SV-Nachzahlung 2.714 €
+test('should match the WKO-Rechner SV-Beitrag and SV-Nachzahlung for a founding year 2026', () => {
+  const year = 2026;
+  const options = { year, foundingYear: year, tipps: new Set() };
+  const profit = 19609.5 + 1929.72; // Einkünfte lt. EStB + SV-Beitrag = Gewinn vor SV
+  const { toPay, additionalPayment } = SVbeitrag(profit, options);
+  assert.equal(Math.round(toPay), 1930);
+  assert.equal(Math.round(additionalPayment), 2714);
+});
+
+test('should reduce the SV-Nachzahlung by a voluntarily increased SV-Beitrag', () => {
+  const year = 2026;
+  const withoutExtra = SVbeitrag(21539, { year, foundingYear: year, tipps: new Set() });
+  const options = { year, foundingYear: year, paidSv: withoutExtra.toPay + 1000, tipps: new Set() };
+  const withExtra = SVbeitrag(21539 - options.paidSv, options); // profit ist um paidSv reduziert
+  assert.ok(withExtra.additionalPayment < withoutExtra.additionalPayment);
+  assert.ok(Math.abs(withExtra.additionalPayment - (withoutExtra.additionalPayment - 1000)) < 0.005);
+});
+
+test('should NOT add tipp to exclude KV/PV if the Umsatz is above the Umsatzgrenze', () => {
+  const year = 2026;
+  const options = { year, foundingYear: 2020, income: fixValues[year].umsatzgrenze + 1, tipps: new Set() };
+  const { toPay } = SVbeitrag(fixValues[year].limit - 1, options);
+  assert.equal(options.tipps.has('EXCLUDE_KV_PV'), false);
+  assert.ok(toPay > fixValues[year].uv * 12); // Mindestbeiträge für KV und PV
+});
+
+test('should use the values of the latest known year for future years', () => {
+  const year = Math.max(...Object.keys(fixValues).map(Number)) + 1;
+  const options = { year, foundingYear: 2020, tipps: new Set() };
+  const latest = { year: year - 1, foundingYear: 2020, tipps: new Set() };
+  assert.equal(SVbeitrag(30000, options).toPay, SVbeitrag(30000, latest).toPay);
 });

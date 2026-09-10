@@ -2,34 +2,26 @@
 // Ab dem Jahr 2023 werden - um der kalten Progression entgegenzuwirken - jährlich die Tarifstufen (außer die letzte ab 1 Million Euro) um zwei Drittel der Inflationsrate angepasst.
 // @see https://www.usp.gv.at/themen/steuern-finanzen/einkommensteuer-ueberblick/weitere-informationen-est/tarifstufen.html
 
-export function einkommensteuer(value, year) {
-  let limits = [11000, 18000, 31000, 60000, 90000, 1000000]; // 2022 and below
-  let percentages = [0, 0.25, 0.35, 0.42, 0.48, 0.5, 0.55]; // 2021 and below
+// Tarifstufen und Grenzsteuersätze je Veranlagungsjahr (Werte davor: 2022 bzw. 2021 und älter)
+const tarife = {
+  2022: { limits: [11000, 18000, 31000, 60000, 90000, 1000000], percentages: [0, 0.2, 0.325, 0.42, 0.48, 0.5, 0.55] },
+  2023: { limits: [11693, 19134, 32075, 62080, 93120, 1000000], percentages: [0, 0.2, 0.3, 0.41, 0.48, 0.5, 0.55] },
+  2024: { limits: [12816, 20818, 34513, 66612, 99266, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] }, // reduce 0.41 to 0.4 from 2023 to 2024
+  2025: { limits: [13308, 21617, 35836, 69166, 103072, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] },
+  2026: { limits: [13539, 21992, 36458, 70365, 104859, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] }
+};
+export const latestTarifYear = Math.max(...Object.keys(tarife).map(Number));
 
-  // add switch for limits and percentages
-  switch (year) {
-    case 2022:
-      percentages = [0, 0.2, 0.325, 0.42, 0.48, 0.5, 0.55];
-      break;
-    case 2023:
-      limits = [11693, 19134, 32075, 62080, 93120, 1000000];
-      percentages = [0, 0.2, 0.3, 0.41, 0.48, 0.5, 0.55];
-      break;
-    case 2024:
-      limits = [12816, 20818, 34513, 66612, 99266, 1000000];
-      percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55]; // reduce 0.41 to 0.4 from 2023 to 2024
-      break;
-    case 2025:
-      limits = [13308, 21617, 35836, 69166, 103072, 1000000];
-      percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
-      break;
-    case 2026:
-      limits = [13539, 21992, 36458, 70365, 104859, 1000000];
-      percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
-      break;
-    default:
-      break;
+// Für Jahre, für die noch kein Tarif bekannt ist (z.B. das kommende Jahr), wird der letzte bekannte Tarif verwendet.
+export function tarif(year) {
+  if (year <= 2021) {
+    return { limits: tarife[2022].limits, percentages: [0, 0.25, 0.35, 0.42, 0.48, 0.5, 0.55] };
   }
+  return tarife[Math.min(year, latestTarifYear)];
+}
+
+export function einkommensteuer(value, year) {
+  let { limits, percentages } = tarif(year);
 
   limits = limits.filter(limit => limit < value);
   limits.push(value); // add value to the end of the array
@@ -43,9 +35,9 @@ export function einkommensteuer(value, year) {
 
 /**
  * Basispauschalierung
- * Im Rahmen der Basispauschalierung ist vorgesehen, die Umsatzgrenze für das Veranlagungsjahr 2025 von derzeit 220.000 Euro auf 320.000 Euro anzuheben.
- * Gleichzeitig soll das Betriebsausgabenpauschale von bislang 12 % auf 13,5 % der Umsätze steigen.
- * Ab dem Veranlagungsjahr 2026 ist eine weitere Erhöhung der Umsatzgrenze auf 420.000 Euro sowie des Betriebsausgabenpauschales auf 15 % geplant.
+ * Für das Veranlagungsjahr 2025 wurde die Umsatzgrenze von 220.000 Euro auf 320.000 Euro angehoben
+ * und das Betriebsausgabenpauschale von 12 % auf 13,5 % der Umsätze erhöht.
+ * Ab dem Veranlagungsjahr 2026 gilt eine Umsatzgrenze von 420.000 Euro sowie ein Betriebsausgabenpauschale von 15 %.
  * @see https://www.wko.at/steuern/basispauschalierung
  */
 export function pauschalierungValues(year) {

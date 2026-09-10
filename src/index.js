@@ -1,6 +1,7 @@
 import { defaultOptions } from './options.js';
 import { einkommensteuer, pauschalierungValues, freibetragValues, investGewinnfreibetrag } from './est.js';
 import { SVbeitrag } from './sv.js';
+import { latestYear } from './sv-values.js';
 
 
 // Einkommen laut Einkommensteuerbescheid
@@ -40,14 +41,17 @@ function calculate(income, outgo, options = {}) {
   options = Object.assign({}, defaultOptions, options);
   options.tipps = new Set();
   options.paidSv = options.paidSv || 0;
+  options.income = income; // Umsatz, für die Umsatzgrenze der Ausnahme von KV und PV
 
   let profit = profitOnEStBescheid(income, outgo, options);
-  const sv = SVbeitrag(profit, options);
+  let sv = SVbeitrag(profit, options);
 
   // if no user input, calculate profit based on SV estimate
+  // and recalculate the SV with the profit after SV deduction (like the WKO-Rechner)
   if(!options.paidSv) {
     options.paidSv = sv.toPay;
     profit = profitOnEStBescheid(income, outgo, options);
+    sv = SVbeitrag(profit, options);
   }
   const est = einkommensteuer(profit, options.year);
   let netto = Math.round(income - outgo - est - options.paidSv);
@@ -67,9 +71,9 @@ function calculate(income, outgo, options = {}) {
   };
 }
 
-export default { calculate, profitOnEStBescheid };
+export default { calculate, profitOnEStBescheid, latestYear };
 
 // set to global window, used for DEMO
 if(typeof window !== "undefined") {
-  window.hundert11 = { calculate: calculate };
+  window.hundert11 = { calculate: calculate, latestYear: latestYear };
 }

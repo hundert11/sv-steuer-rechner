@@ -114,3 +114,8 @@ test('should return correct maxInvestFreibetrag for 2023', () => {
   const { grundfreibetrag } = freibetragValues(2023);
   assert.equal(investGewinnfreibetrag(profit, 2023), 45950 - grundfreibetrag);
 });
+
+test('should use the tariff of the latest known year for future years', () => {
+  assert.equal(einkommensteuer(50000, 2027), einkommensteuer(50000, 2026));
+  assert.notEqual(einkommensteuer(50000, 2027), einkommensteuer(50000, 2022));
+});

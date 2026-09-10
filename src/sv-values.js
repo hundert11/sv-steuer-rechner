@@ -14,10 +14,11 @@ export function percentages(year) {
 // unter D. Sozialversicherung der selbständig Erwerbstätigen
 // mit und ohne Mitgliedschaft in der Wirtschaftskammer sowie der freiberuflich selbständig Erwerbstätigen (Seite 14 oder 15 oder 16)
 // @see https://www.sozialversicherung.at/cdscontent/?contentid=10007.862683&portal=svportal
-// Einkunftsgrenze = limit
+// Einkunftsgrenze = limit, Umsatzgrenze = umsatzgrenze (beide müssen für die Ausnahme von KV und PV eingehalten werden)
 // @see https://www.svs.at/cdscontent/?contentid=10007.846813&portal=svsportal
 export const fixValues = {
   2026: {
+    umsatzgrenze: 55000,
     uv: 12.95,
     kvMinBeitragsgrundlage: 551.10,
     pvMinBeitragsgrundlage: 551.10,
@@ -26,6 +27,7 @@ export const fixValues = {
     limit: 6613.2
   },
   2025: {
+    umsatzgrenze: 55000,
     uv: 12.07,
     kvMinBeitragsgrundlage: 551.10,
     pvMinBeitragsgrundlage: 551.10,
@@ -34,6 +36,7 @@ export const fixValues = {
     limit: 6613.2
   },
   2024: {
+    umsatzgrenze: 35000,
     uv: 11.35, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 518.44,
     pvMinBeitragsgrundlage: 518.44,
@@ -42,6 +45,7 @@ export const fixValues = {
     limit: 6221.28
   },
   2023: {
+    umsatzgrenze: 35000,
     uv: 10.97, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 500.91,
     pvMinBeitragsgrundlage: 500.91,
@@ -50,6 +54,7 @@ export const fixValues = {
     limit: 6010.92
   },
   2022: {
+    umsatzgrenze: 35000,
     uv: 10.64, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 485.85,
     pvMinBeitragsgrundlage: 485.85,
@@ -58,6 +63,7 @@ export const fixValues = {
     limit: 5830.2
   },
   2021: {
+    umsatzgrenze: 35000,
     uv: 10.42, // monatlich in € Unfallversicherung
     kvMinBeitragsgrundlage: 475.86,
     pvMinBeitragsgrundlage: 574.36,
@@ -66,6 +72,7 @@ export const fixValues = {
     limit: 5710.32
   },
   2020: {
+    umsatzgrenze: 35000,
     uv: 10.09,
     kvMinBeitragsgrundlage: 460.66,
     pvMinBeitragsgrundlage: 574.36,
@@ -74,6 +81,7 @@ export const fixValues = {
     limit: 5527.92
   },
   2019: {
+    umsatzgrenze: 30000,
     uv: 9.79,
     kvMinBeitragsgrundlage: 446.81,
     pvMinBeitragsgrundlage: 654.25,
@@ -82,6 +90,7 @@ export const fixValues = {
     limit: 5361.72
   },
   2018: {
+    umsatzgrenze: 30000,
     uv: 9.6,
     kvMinBeitragsgrundlage: 438.05,
     pvMinBeitragsgrundlage: 654.25,
@@ -89,6 +98,7 @@ export const fixValues = {
     maxBeitragsgrundlage: 5985
   },
   2017: {
+    umsatzgrenze: 30000,
     uv: 9.33,
     kvMinBeitragsgrundlage: 425.7,
     pvMinBeitragsgrundlage: 723.52,
@@ -96,6 +106,7 @@ export const fixValues = {
     maxBeitragsgrundlage: 5810
   },
   2016: {
+    umsatzgrenze: 30000,
     uv: 9.11,
     kvMinBeitragsgrundlage: 415.72,
     pvMinBeitragsgrundlage: 723.52,
@@ -103,3 +114,13 @@ export const fixValues = {
     maxBeitragsgrundlage: 5670
   }
 };
+
+const knownYears = Object.keys(fixValues).map(Number);
+export const latestYear = Math.max(...knownYears);
+export const earliestYear = Math.min(...knownYears);
+
+// Für Jahre, für die noch keine Werte bekannt sind (z.B. das kommende Jahr),
+// werden die Werte des letzten bekannten Jahres verwendet.
+export function valuesForYear(year) {
+  return fixValues[Math.min(Math.max(year, earliestYear), latestYear)];
+}
