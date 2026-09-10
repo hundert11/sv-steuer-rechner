@@ -8,6 +8,46 @@ test('should return 0 for 0-13539 income', () => {
   assert.notEqual(einkommensteuer(13540, 2026), 0);
 });
 
+test('should return correct ESt for all levels in 2027', () => {
+  const levels = [
+    { limit: 13846, est: 0 },
+    { limit: 22491, est: 1729 },
+    { limit: 37285, est: 6167.2 },
+    { limit: 71960, est: 20037.2 },
+    { limit: 107236, est: 36969.68 },
+    { limit: 1000000, est: 483351.68 }
+  ];
+  levels.forEach(level => {
+    assert.ok(Math.abs(einkommensteuer(level.limit, 2027) - level.est) < 0.01, `${level.limit}: ${einkommensteuer(level.limit, 2027)}`);
+  });
+});
+
+// Kontrollwerte aus dem WKO-Rechner (https://svrechner.wko.at/), Stand September 2026, auf ganze Euro gerundet
+test('should match the WKO-Rechner ESt for 2026', () => {
+  const samples = [
+    { einkommen: 19609.5, est: 1214 },
+    { einkommen: 23859, est: 2251 },
+    { einkommen: 31480, est: 4537 }
+  ];
+  samples.forEach(sample => {
+    assert.equal(Math.round(einkommensteuer(sample.einkommen, 2026)), sample.est);
+  });
+});
+
+test('should return correct ESt at all level limits in 2026 (fixed values)', () => {
+  const levels = [
+    { limit: 13539, est: 0 },
+    { limit: 21992, est: 1690.6 },
+    { limit: 36458, est: 6030.4 },
+    { limit: 70365, est: 19593.2 },
+    { limit: 104859, est: 36150.32 },
+    { limit: 1000000, est: 483720.82 }
+  ];
+  levels.forEach(level => {
+    assert.ok(Math.abs(einkommensteuer(level.limit, 2026) - level.est) < 0.01, `${level.limit}: ${einkommensteuer(level.limit, 2026)}`);
+  });
+});
+
 test('should return correct ESt for all levels in 2026', () => {
   const limits = [13539, 21992, 36458, 70365, 104859, 1000000];
   const percentages = [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55];
@@ -116,6 +156,6 @@ test('should return correct maxInvestFreibetrag for 2023', () => {
 });
 
 test('should use the tariff of the latest known year for future years', () => {
-  assert.equal(einkommensteuer(50000, 2027), einkommensteuer(50000, 2026));
-  assert.notEqual(einkommensteuer(50000, 2027), einkommensteuer(50000, 2022));
+  assert.equal(einkommensteuer(50000, 2028), einkommensteuer(50000, 2027));
+  assert.notEqual(einkommensteuer(50000, 2028), einkommensteuer(50000, 2022));
 });

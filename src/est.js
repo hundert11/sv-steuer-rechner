@@ -8,7 +8,9 @@ const tarife = {
   2023: { limits: [11693, 19134, 32075, 62080, 93120, 1000000], percentages: [0, 0.2, 0.3, 0.41, 0.48, 0.5, 0.55] },
   2024: { limits: [12816, 20818, 34513, 66612, 99266, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] }, // reduce 0.41 to 0.4 from 2023 to 2024
   2025: { limits: [13308, 21617, 35836, 69166, 103072, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] },
-  2026: { limits: [13539, 21992, 36458, 70365, 104859, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] }
+  2026: { limits: [13539, 21992, 36458, 70365, 104859, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] },
+  // +2,27% (zwei Drittel von 3,4% Inflation), Verordnung vom September 2026, @see https://orf.at/stories/3440836/
+  2027: { limits: [13846, 22491, 37285, 71960, 107236, 1000000], percentages: [0, 0.2, 0.3, 0.4, 0.48, 0.5, 0.55] }
 };
 export const latestTarifYear = Math.max(...Object.keys(tarife).map(Number));
 

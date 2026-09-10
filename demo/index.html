@@ -71,8 +71,8 @@
           <a @click="showYear = true">Nachrechnen für verganges Jahr?</a>
         </p>
         <p x-show="options.year > hundert11.latestYear" class="has-text-warning-dark">
-          Für <span x-text="options.year"></span> liegen noch keine SV-Werte und Tarifstufen vor,
-          es wird mit den Werten von <span x-text="hundert11.latestYear"></span> gerechnet.
+          Für <span x-text="options.year"></span> liegen noch keine SV-Werte vor,
+          es wird mit den SV-Werten von <span x-text="hundert11.latestYear"></span> gerechnet.
         </p>
 
         <div x-show="showYear" class="field mt-4">
