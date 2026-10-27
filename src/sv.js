@@ -12,8 +12,8 @@ export function SVbeitrag(profit, options = {}) {
   const values = valuesForYear(year);
   let months = options.foundingYear === year ? 13-options.foundingMonth : 12;
 
-  // Wenn die Einkünfte unter der Einkunftsgrenze (2026: 6.613,20 €) und der Umsatz unter der
-  // Umsatzgrenze (2026: 55.000 € brutto) liegen, kann man sich bei der SVS von der Kranken- und
+  // Wenn die Einkünfte unter der Einkunftsgrenze (2027: 6.613,20 €) und der Umsatz unter der
+  // Umsatzgrenze (2027: 55.000 € brutto) liegen, kann man sich bei der SVS von der Kranken- und
   // Pensionsversicherung ausnehmen lassen und zahlt nur mehr die Unfallversicherung.
   // @see https://www.svs.at/cdscontent/?contentid=10007.816718&portal=svsportal
   // Verglichen wird der Gewinn vor SV-Beiträgen, weil bei einer Ausnahme keine KV/PV-Beiträge anfallen würden.

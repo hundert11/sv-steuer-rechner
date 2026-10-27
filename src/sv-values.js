@@ -17,6 +17,17 @@ export function percentages(year) {
 // Einkunftsgrenze = limit, Umsatzgrenze = umsatzgrenze (beide müssen für die Ausnahme von KV und PV eingehalten werden)
 // @see https://www.svs.at/cdscontent/?contentid=10007.846813&portal=svsportal
 export const fixValues = {
+  // Voraussichtliche Werte lt. ÖGK (Aufwertungszahl 1,046), Geringfügigkeitsgrenze bleibt unverändert.
+  // uv ist noch nicht veröffentlicht und aus dem Wert 2026 mit der Aufwertungszahl hochgerechnet.
+  2027: {
+    umsatzgrenze: 55000,
+    uv: 13.55,
+    kvMinBeitragsgrundlage: 551.10,
+    pvMinBeitragsgrundlage: 551.10,
+    svsMinBeitragsgrundlage: 551.10,
+    maxBeitragsgrundlage: 8645,
+    limit: 6613.2
+  },
   2026: {
     umsatzgrenze: 55000,
     uv: 12.95,
